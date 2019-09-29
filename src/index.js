@@ -1,3 +1,63 @@
+'use strict'
+
+const mongoose = require('mongoose');
+const app = require('./app');
+const config = require('./config');
+
+
+/*
+const options = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
+*/
+
+
+//Connectando a la base de datos y luego iniciando el servidor
+mongoose.connect(config.db,(err, res)=>{
+    if(err) throw err;
+    console.log('Conexion con MongoDB establecida');
+
+    app.listen(config.port, ()=>{
+        console.log(`API REST corriendo en el puerto ${config.port}`);
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 //Corriendo con mongoose
 const mongoose = require('mongoose');
@@ -20,7 +80,7 @@ mongoose.connect(uri_cluster_01, (err, res)=>{
 
 
 //Test con MongoDB
-/*
+
 const MongoClient = require('mongodb').MongoClient;
 
 // replace the uri string with your connection string.
