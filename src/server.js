@@ -1,4 +1,26 @@
 
+//Corriendo con mongoose
+const mongoose = require('mongoose');
+const express = require('express');
+const app = express();
+
+const uri_cluster_01 = "mongodb+srv://quokka_wild:Quokka_25@cluster0-lzqcs.gcp.mongodb.net/";
+
+mongoose.connect(uri_cluster_01, (err, res)=>{
+    if(err) throw err;
+    console.log('Conexion con MongoDB establecida');
+
+    app.listen(3000, ()=>{
+        console.log('API REST corriendo en el puerto 3000');
+    });
+
+});
+
+
+
+
+//Test con MongoDB
+/*
 const MongoClient = require('mongodb').MongoClient;
 
 // replace the uri string with your connection string.
@@ -24,8 +46,11 @@ MongoClient.connect(uri, function(err, client) {
    // perform actions on the collection object
    client.close();
 });
+*/
 
 
+
+//Estado Original
 /*
 const express = require('express');
 const mongoose = require('mongoose');
