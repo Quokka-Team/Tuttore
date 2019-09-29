@@ -4,7 +4,7 @@ const express = require('express');
 const StudentController = require('../controllers/studentController');
 
 
-// const auth = require('../middlewares/auth');
+const auth = require('../middlewares/auth');
 
 
 const api = express.Router();
@@ -18,6 +18,12 @@ api.post('/', (req, res) =>{
 });
 
 api.post('/signup', StudentController.signUp);
+
+api.post('/signin', StudentController.signIn);
+
+api.get('/profile', auth,  (req, res) =>{
+    res.send('Holimolis-profile');
+});
 
 
 module.exports = api;

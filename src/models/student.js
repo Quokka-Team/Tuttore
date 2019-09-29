@@ -36,8 +36,6 @@ StudentSchema.methods.comparePassword = function (password){
     return bcrypt.compareSync(password, this.password);
 };
 
-
-// TODO
 StudentSchema.pre('save', function(next){
     let student=this;
     if(!student.isModified('password')) return next();
