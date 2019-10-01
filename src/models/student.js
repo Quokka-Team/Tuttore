@@ -5,26 +5,65 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 const StudentSchema = new Schema({
-    name : String,
-    lastName : String,
-    email : String,
-    password : String,
-    career : Schema.Types.ObjectId,
-    signupDate : {type: Date, default: Date.now()},
-    papa: Number,
-    phoneNumber: String,
-
-    courses : [{
-        courseId : Schema.Types.ObjectId, 
-        gpa : Number,
-        score : Number
+    name: {
+        type: String
+    },
+    lastName: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+    password: {
+        type: String
+    },
+    career: {
+        type: Schema.Types.ObjectId
+    },
+    gpa: {
+        type: Number
+    },
+    phoneNumber: {
+        type: String
+    },
+    courses: [{
+        courseId: {
+          type: Schema.Types.ObjectId
+        },
+        gpa: {
+          type: Number
+        },
+        score: {
+          type: Number
+        }
     }],
     profilePicture: {
-        data:Buffer,
-        contentType : String
+        data: {
+          type: Buffer
+        },
+        contentType: {
+          type: String
+        }
     },
-    description: String 
-
+    description: {
+        type: String
+    },
+    availability: [{
+        initialDate: {
+          type: Date
+        },
+        finalDate: {
+          type: Date
+        }
+    }],
+    chat: [{
+        receiverId: {
+          type: Schema.Types.ObjectId
+        },
+        chatId: {
+          type: Schema.Types.ObjectId
+        }
+    }]
 });
 
 
