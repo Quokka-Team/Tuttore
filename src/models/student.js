@@ -5,26 +5,82 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
 const StudentSchema = new Schema({
-    name : String,
-    lastName : String,
-    email : String,
-    password : String,
-    career : Schema.Types.ObjectId,
-    signupDate : {type: Date, default: Date.now()},
-    papa: Number,
-    phoneNumber: String,
-
-    courses : [{
-        courseId : Schema.Types.ObjectId, 
-        gpa : Number,
-        score : Number
+    name: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    career: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
+    gpa: {
+        type: Number,
+        required: true
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+    },
+    courses: [{
+        courseId: {
+          type: Schema.Types.ObjectId,
+          required: true
+        },
+        gpa: {
+          type: Number,
+          required: true
+        },
+        score: {
+          type: Number,
+          required: true
+        }
     }],
     profilePicture: {
-        data:Buffer,
-        contentType : String
+        data: {
+          type: Buffer,
+          required: true
+        },
+        contentType: {
+          type: String,
+          required: true
+        }
     },
-    description: String 
-
+    description: {
+        type: String,
+        required: true
+    },
+    availability: [{
+        initialDate: {
+          type: Date,
+          required: true
+        },
+        finalDate: {
+          type: Date,
+          required: true
+        }
+    }],
+    chat: [{
+        receiverId: {
+          type: Schema.Types.ObjectId,
+          required: true
+        },
+        chatId: {
+          type: Schema.Types.ObjectId,
+          required: true
+        }
+    }]
 });
 
 
