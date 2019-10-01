@@ -4,7 +4,8 @@
   overflow: hidden;
   height: 100vh;
   display: flex;
-  background-image: url("/img/landing20.jpg");
+  /* background-image: url("/img/landing20.jpg"); */
+  background-image: url("../img/landing20.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -36,19 +37,6 @@
   text-align:  center;
 }
 
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  height: 100vh;
-  display: flex;
-  background-image: url("/img/landing20.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  text-align: center;
-}
-
 .subjects{
   padding-top: 100px;
 }
@@ -58,7 +46,7 @@
   overflow: hidden;
   height: 100vh;
   display: flex;
-  background-image: url("/img/a.jpg");
+  background-image: url("../img/a.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -70,7 +58,7 @@
   overflow: hidden;
   height: 100vh;
   display: flex;
-  background-image: url("/img/aa.jpg");
+  background-image: url("../img/aa.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
