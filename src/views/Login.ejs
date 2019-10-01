@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<title>Pagina de Registro</title>
+
+	<!-- Required meta tags always come first -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+
+	<!-- Main Font -->
+	<script src="js/libs/webfontloader.min.js"></script>
+
+	<script>
+		WebFont.load({
+			google: {
+				families: ['Roboto:300,400,500,700:latin']
+			}
+		});
+	</script>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" type="text/css" href="Bootstrap/dist/css/bootstrap-reboot.css">
+	<link rel="stylesheet" type="text/css" href="Bootstrap/dist/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="Bootstrap/dist/css/bootstrap-grid.css">
+
+	<!-- Main Styles CSS -->
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/fonts.min.css">
+
+
+
+</head>
+
+<body class="landing-page">
+
+	<div class="row display-flex">
+		<div class="col col-xl-8 col-lg-6 col-md-12 col-sm-12 col-12 image-login" >
+
+		</div> 
+
+		<div class="col col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12" style="padding: 0;height: 100vh;">
+			
+			<!-- Login-Registration Form  -->
+			
+			<div class="registration-login-form" style="padding: 0; height: 100vh;">
+				<!-- Nav tabs -->
+	
+				<!-- Tab panes -->
+				<div class="tab-content">			
+					<div class="tab-pane active" id="profile" role="tabpanel" data-mh="log-tab">
+						<div class="title h6">Inicia sesión en tu cuenta</div>
+						<form class="content" action="/login" method="POST">
+							<div class="row">
+								<div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+									<div class="form-group label-floating">
+										<label class="control-label">Correo electrónico</label>
+										<input class="form-control" placeholder="" type="email" name="email" id="email">
+									</div>
+									<div class="form-group label-floating">
+										<label class="control-label">Contraseña</label>
+										<input class="form-control" placeholder="" type="password" name="password" id="password">
+									</div>
+									<a href="#" class="btn btn-lg btn-primary full-width" style="background-color: #00BBF0;border-color: #00BBF0">Iniciar con Google</a>
+									<button type="submit" class="btn btn-lg btn-primary full-width">Iniciar sesión</button>
+									<p>¿No tienes una cuenta aún? <a href="/register">Regístrate ahora!</a> y encuentra tutores para las materias que necesites!</p>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<!-- ... end Login-Registration Form  -->		</div>
+	</div>
+
+<!-- Window-popup Restore Password -->
+
+<div class="modal fade" id="restore-password" tabindex="-1" role="dialog" aria-labelledby="restore-password" aria-hidden="true">
+	<div class="modal-dialog window-popup restore-password-popup" role="document">
+		<div class="modal-content">
+			<a href="#" class="close icon-close" data-dismiss="modal" aria-label="Close">
+				<svg class="olymp-close-icon"><use xlink:href="svg-icons/sprites/icons.svg#olymp-close-icon"></use></svg>
+			</a>
+
+			<div class="modal-header">
+				<h6 class="title">Recupera tu contraseña</h6>
+			</div>
+
+			<div class="modal-body">
+				<form  method="get">
+					<p>Ingresa tu correo electrónico y haz click en el botón de envío. Recibiras un e-mail. Usa el código de la parte inferior para cambiar tu antigua contraseña
+						por una nueva.
+					</p>
+					<div class="form-group label-floating">
+						<label class="control-label">Tu correo electrónico</label>
+						<input class="form-control" placeholder="" type="email" value="james-spiegel@yourmail.com">
+					</div>
+					<button class="btn btn-purple btn-lg full-width">Envíame el código</button>
+					<div class="form-group label-floating">
+						<label class="control-label">Ingresa el código</label>
+						<input class="form-control" placeholder="" type="text" value="">
+					</div>
+					<div class="form-group label-floating">
+						<label class="control-label">Tu nueva contraseña</label>
+						<input class="form-control" placeholder="" type="password" value="olympus">
+					</div>
+					<button class="btn btn-primary btn-lg full-width">Cambiar tu contraseña!</button>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ... end Window-popup Restore Password -->
+
+<!-- JS Scripts -->
+<script src="js/jQuery/jquery-3.4.1.js"></script>
+<script src="js/libs/jquery.appear.js"></script>
+<script src="js/libs/jquery.mousewheel.js"></script>
+<script src="js/libs/perfect-scrollbar.js"></script>
+<script src="js/libs/jquery.matchHeight.js"></script>
+<script src="js/libs/svgxuse.js"></script>
+<script src="js/libs/imagesloaded.pkgd.js"></script>
+<script src="js/libs/Headroom.js"></script>
+<script src="js/libs/velocity.js"></script>
+<script src="js/libs/ScrollMagic.js"></script>
+<script src="js/libs/jquery.waypoints.js"></script>
+<script src="js/libs/jquery.countTo.js"></script>
+<script src="js/libs/popper.min.js"></script>
+<script src="js/libs/material.min.js"></script>
+<script src="js/libs/bootstrap-select.js"></script>
+<script src="js/libs/smooth-scroll.js"></script>
+<script src="js/libs/selectize.js"></script>
+<script src="js/libs/swiper.jquery.js"></script>
+<script src="js/libs/moment.js"></script>
+<script src="js/libs/daterangepicker.js"></script>
+<script src="js/libs/fullcalendar.js"></script>
+<script src="js/libs/isotope.pkgd.js"></script>
+<script src="js/libs/ajax-pagination.js"></script>
+<script src="js/libs/Chart.js"></script>
+<script src="js/libs/chartjs-plugin-deferred.js"></script>
+<script src="js/libs/circle-progress.js"></script>
+<script src="js/libs/loader.js"></script>
+<script src="js/libs/run-chart.js"></script>
+<script src="js/libs/jquery.magnific-popup.js"></script>
+<script src="js/libs/jquery.gifplayer.js"></script>
+<script src="js/libs/mediaelement-and-player.js"></script>
+<script src="js/libs/mediaelement-playlist-plugin.min.js"></script>
+<script src="js/libs/ion.rangeSlider.js"></script>
+
+<script src="js/main.js"></script>
+<script src="js/libs-init/libs-init.js"></script>
+<script defer src="fonts/fontawesome-all.js"></script>
+
+<script src="Bootstrap/dist/js/bootstrap.bundle.js"></script>
+
+</body>
+</html>
