@@ -10,7 +10,7 @@ const auth = require('../middlewares/auth');
 const api = express.Router();
 
 api.get('/', (req, res) =>{
-    res.send('Holimolis');
+    res.render("login");
 });
 
 api.post('/', (req, res) =>{
