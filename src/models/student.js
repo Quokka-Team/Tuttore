@@ -6,79 +6,62 @@ const bcrypt = require('bcrypt-nodejs');
 
 const StudentSchema = new Schema({
     name: {
-        type: String,
-        required: true
+        type: String
     },
     lastName: {
-        type: String,
-        required: true
+        type: String
     },
     email: {
-        type: String,
-        required: true
+        type: String
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     career: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
     },
     gpa: {
-        type: Number,
-        required: true
+        type: Number
     },
     phoneNumber: {
-        type: String,
-        required: true
+        type: String
     },
     courses: [{
         courseId: {
-          type: Schema.Types.ObjectId,
-          required: true
+          type: Schema.Types.ObjectId
         },
         gpa: {
-          type: Number,
-          required: true
+          type: Number
         },
         score: {
-          type: Number,
-          required: true
+          type: Number
         }
     }],
     profilePicture: {
         data: {
-          type: Buffer,
-          required: true
+          type: Buffer
         },
         contentType: {
-          type: String,
-          required: true
+          type: String
         }
     },
     description: {
-        type: String,
-        required: true
+        type: String
     },
     availability: [{
         initialDate: {
-          type: Date,
-          required: true
+          type: Date
         },
         finalDate: {
-          type: Date,
-          required: true
+          type: Date
         }
     }],
     chat: [{
         receiverId: {
-          type: Schema.Types.ObjectId,
-          required: true
+          type: Schema.Types.ObjectId
         },
         chatId: {
-          type: Schema.Types.ObjectId,
-          required: true
+          type: Schema.Types.ObjectId
         }
     }]
 });
