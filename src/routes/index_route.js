@@ -19,13 +19,14 @@ api.post('/', (req, res) =>{
 
 api.post('/signUp', StudentController.signUp);
 
-api.post('/singIn', StudentController.signIn);
+api.post('/signIn', StudentController.signIn);
+
 
 api.get('/profile', auth,  (req, res) =>{
     res.send("Estas en al ruta '/profile' con el metodo get y te ha autentificado");
 });
 
-api.get('/singIn', (req, res) =>{
+api.get('/signIn', (req, res) =>{
     res.send("Estas en al ruta '/singIn' con el metodo get");
 });
 
