@@ -10,27 +10,28 @@ const auth = require('../middlewares/auth');
 const api = express.Router();
 
 api.get('/', (req, res) =>{
-    res.render("login");
+    res.send("Estas en al ruta '/' con el metodo get ");
 });
 
 api.post('/', (req, res) =>{
-    res.send('Holimolis');
+    res.send("Estas en al ruta '/' con el metodo post ");
 });
 
-api.post('/register', StudentController.signUp);
+api.post('/signUp', StudentController.signUp);
 
-api.post('/login', StudentController.signIn);
+api.post('/signIn', StudentController.signIn);
+
 
 api.get('/profile', auth,  (req, res) =>{
-    res.send('Holimolis-profile');
+    res.send("Estas en al ruta '/profile' con el metodo get y te ha autentificado");
 });
 
-api.get('/login', (req, res) =>{
-    res.render("login");
+api.get('/signIn', (req, res) =>{
+    res.send("Estas en al ruta '/singIn' con el metodo get");
 });
 
-api.get('/register', (req, res) =>{
-    res.render("register");
+api.get('/signUp', (req, res) =>{
+    res.send("Estas en al ruta '/signUp' con el metodo get");
 });
 
 module.exports = api;

@@ -24,7 +24,7 @@ async function signUp(req, res){
             
             //Código original - funcional
             //return res.status(200).send({token: service.createToken(student)})
-            return res.redirect('/login');
+            return res.redirect('/signIn');
         });
     }
 
@@ -40,8 +40,7 @@ function signIn(req, res){
         if(student.comparePassword(req.body.password)){
             res.status(200).send({
                 message: 'Te has logueado correctamente',
-                token: service.createToken(student),
-                student:student
+                token: service.createToken(student)
             });
         }  else {
             res.status(400).send({
