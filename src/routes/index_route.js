@@ -2,7 +2,7 @@
 
 const express = require('express');
 const StudentController = require('../controllers/studentController');
-
+const emailNotificationController = require('../controllers/emailNotificationController');
 
 const auth = require('../middlewares/auth');
 
@@ -39,6 +39,8 @@ api.get('/profile', auth, (req, res) => {
 });
 
 
+
+api.post('/codeVerification', emailNotificationController.sendCodeVerification);
 
 
 module.exports = api;
