@@ -6,8 +6,8 @@ AWS.config.update({region: 'us-east-1'});
 
 
 AWS.config.update({
-    accessKeyId: "AKIAWZPRUIOD5N5YLMXK",
-    secretAccessKey: "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",
+    accessKeyId: "Consulte con Gabriel Avendano Casadiego",
+    secretAccessKey: "Consulte con Camilo Andres Gil Ballen",
     "region": "us-east-1"
 });
 
