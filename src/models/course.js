@@ -29,5 +29,8 @@ const CourseSchema = new Schema({
           type: Number,
           required: true
         }
-    }]
+    }],
+    dateCreated : {
+        type: Date
+    }
 });

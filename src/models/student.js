@@ -48,6 +48,9 @@ const StudentSchema = new Schema({
     description: {
         type: String
     },
+    isTutor : {
+        type: Boolean
+    },
     availability: [{
         initialDate: {
           type: Date
@@ -63,7 +66,10 @@ const StudentSchema = new Schema({
         chatId: {
           type: Schema.Types.ObjectId
         }
-    }]
+    }],
+    dateCreated: {
+        type: Date
+    }
 });
 
 
