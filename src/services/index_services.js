@@ -1,8 +1,14 @@
 'use strict'
 
+//Encargada del manejo de los token
 const jwt = require('jwt-simple');
+
+//Libreria para el funcionamiento del tiempo
 const moment  = require('moment');
+
+//Encargado de obtener algunas claves y demas
 const config = require('../config');
+
 
 function createToken(student){
     const payload={

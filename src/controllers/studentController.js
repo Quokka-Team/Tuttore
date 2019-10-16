@@ -5,13 +5,16 @@ const Student = require('../models/student');
 const service = require('../services/index_services');
 
 
-
+//Registro
 async function signUp(req, res){
     const student = new Student({
         name : req.body.name,
         lastName : req.body.lastName,
         email: req.body.email,
-        password : req.body.password
+        password : req.body.password,
+        career: req.body.carrer,
+        gpa:req.body.gpa,
+        phoneNumber: req.body.phoneNumber
     });
     const existingStudent = await Student.findOne({email:student.email});
 
@@ -24,13 +27,13 @@ async function signUp(req, res){
             
             //Código original - funcional
             //return res.status(200).send({token: service.createToken(student)})
-            return res.redirect('/signIn');
+            return res.status(200).send({message: 'Usuario Registrado de Manera Correcta'});
         });
     }
 
 }
 
-
+//Login
 function signIn(req, res){
     Student.findOne({email:req.body.email}, (err, student)=>{
         if (err) return res.status(500).send({message: 'Servidor Failed'});
@@ -46,13 +49,43 @@ function signIn(req, res){
             res.status(400).send({
                 message: 'Contraseña incorrecta'
             });
-        }
+        }    
+    });
+}
 
-        
+
+//Obtener estudiante
+function getStudent(req, res){
+    Student.findOne({_id:req.student}, (err, student) =>{
+        if (err) return res.status(500).send({message: 'Servidor Failed'});
+
+        if(!student) return res.status(404).send({message: 'Este usuario NO existe el usuario'});
+
+        res.status(200).send({
+            name:student.name,
+            lastName: student.lastName,
+            email:student.email,
+            career: student.career,
+            gpa:student.gpa,
+            phoneNumber: student.phoneNumber
+        });
+    });
+}
+
+
+
+//Provisional
+function getAllStudents(req, res){
+    Student.find({}, (err, students)=>{
+        if (err) return res.status(500).send({message: 'Servidor Failed'});
+
+        res.status(200).send(students);
     });
 }
 
 module.exports = {
     signUp,
-    signIn
+    signIn,
+    getStudent,
+    getAllStudents
 }
