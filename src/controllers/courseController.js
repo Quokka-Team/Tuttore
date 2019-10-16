@@ -13,10 +13,34 @@ async function addCourse(req, res){
         dateCreated:dateNow
     });
     course.save((err)=>{
-        if (err) res.status(500).send({message: `Error al agregar la materia: ${err}`});
+        if (err) res.status(500).send({message: `Error adding the course: ${err}`});
 
-        return res.status(200).send({message: 'Materia agregada de manera correcta'});
+        return res.status(200).send({message: 'Course succesfully added'});
     });
 }
 
-module.exports = {addCourse}
+
+//Provisional
+async function getAllCourses(req, res){
+    Course.find({}, (err, courses)=>{
+        if (err) return res.status(500).send({message: 'Server Failed'});
+
+        res.status(200).send(courses);
+    });
+}
+
+async function getNewCourses(req, res){
+    let numberOfNewCourses = 2;
+    Course.find({}).sort({dateCreated: 'asc'}).limit(numberOfNewCourses).exec( (err, courses) => {
+        if (err) return res.status(500).send({message: 'Server Failed'});
+        
+        res.status(200).send(courses);
+    });
+}
+
+
+module.exports = {
+    addCourse,
+    getAllCourses,
+    getNewCourses
+}

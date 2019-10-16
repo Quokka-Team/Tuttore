@@ -20,14 +20,14 @@ async function signUp(req, res){
 
     if (existingStudent) {
 
-        return res.status(400).send({message: 'El usuario ya existe'});
+        return res.status(400).send({message: 'User already exist'});
     } else {
         student.save((err)=>{
-            if (err) res.status(500).send({message: `Error al crear el usuario: ${err}`});
+            if (err) res.status(500).send({message: `Error creating user: ${err}`});
             
             //Código original - funcional
             //return res.status(200).send({token: service.createToken(student)})
-            return res.status(200).send({message: 'Usuario Registrado de Manera Correcta'});
+            return res.status(200).send({message: 'User registered sucessfully'});
         });
     }
 
@@ -36,9 +36,9 @@ async function signUp(req, res){
 //Login
 function signIn(req, res){
     Student.findOne({email:req.body.email}, (err, student)=>{
-        if (err) return res.status(500).send({message: 'Servidor Failed'});
+        if (err) return res.status(500).send({message: 'Server Failed'});
 
-        if(!student) return res.status(404).send({message: 'NO existe el usuario'});
+        if(!student) return res.status(404).send({message: 'User does not exist'});
         
         if(student.comparePassword(req.body.password)){
             res.status(200).send({
@@ -57,9 +57,9 @@ function signIn(req, res){
 //Obtener estudiante
 function getStudent(req, res){
     Student.findOne({_id:req.student}, (err, student) =>{
-        if (err) return res.status(500).send({message: 'Servidor Failed'});
+        if (err) return res.status(500).send({message: 'Server Failed'});
 
-        if(!student) return res.status(404).send({message: 'Este usuario NO existe el usuario'});
+        if(!student) return res.status(404).send({message: 'User does not exist'});
 
         res.status(200).send({
             name:student.name,
@@ -77,7 +77,7 @@ function getStudent(req, res){
 //Provisional
 function getAllStudents(req, res){
     Student.find({}, (err, students)=>{
-        if (err) return res.status(500).send({message: 'Servidor Failed'});
+        if (err) return res.status(500).send({message: 'Server Failed'});
 
         res.status(200).send(students);
     });
