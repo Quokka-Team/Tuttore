@@ -12,6 +12,9 @@ const CourseSchema = new Schema({
         type: String,
         required: true
     },
+    dateCreated : {
+        type: Date
+    },
     avaibleTutors: [{
         initialDate: {
           type: Date,
@@ -29,8 +32,8 @@ const CourseSchema = new Schema({
           type: Number,
           required: true
         }
-    }],
-    dateCreated : {
-        type: Date
-    }
+    }]
 });
+
+
+module.exports = mongoose.model('Course', CourseSchema);
