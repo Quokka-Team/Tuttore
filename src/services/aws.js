@@ -4,11 +4,12 @@ const AWS = require('aws-sdk');
 // Set the Region 
 AWS.config.update({region: 'us-east-1'});
 
+//En este caso las credenciales se cargan desde EB usando un rol
 
-AWS.config.update({
-    accessKeyId: "Consulte con Gabriel Avendano Casadiego",
-    secretAccessKey: "Consulte con Camilo Andres Gil Ballen",
-    "region": "us-east-1"
-});
+//Se crea un rol con todos los permisos necesarios
+
+//En el entorno, en la parte de configuracion -> seguridad -> Se selecciona dicho rol
+
+//Automaticamente se caragaran todas las credenciales
 
 module.exports = AWS
