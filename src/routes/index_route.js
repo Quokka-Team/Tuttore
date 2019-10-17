@@ -48,10 +48,13 @@ api.get('/profile', auth, (req, res) => {
 //Permite anadir un curso
 api.get('/addCourse', CourseController.addCourse);
 
+//Provisional
+api.get('/getAllCourses', CourseController.getAllCourses);
+
+api.get('/getNewCourses', CourseController.getNewCourses);
 
 //Obitene los datos del estudiante, se requiere autentificacion
 api.post('/getStudent', auth, StudentController.getStudent);
-
 
 
 //Provisional - Envia codigo
