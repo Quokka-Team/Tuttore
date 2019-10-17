@@ -4,7 +4,7 @@ const express = require('express');
 const StudentController = require('../controllers/studentController');
 const emailNotificationController = require('../controllers/emailNotificationController');
 const CourseController = require('../controllers/courseController');
-
+const TutorController = require('../controllers/tutorController');
 
 const auth = require('../middlewares/auth');
 
@@ -55,6 +55,9 @@ api.get('/getNewCourses', CourseController.getNewCourses);
 
 //Obitene los datos del estudiante, se requiere autentificacion
 api.post('/getStudent', auth, StudentController.getStudent);
+
+//Agregar tutor
+api.post('/registerTutor', auth, TutorController.registerTutor);
 
 
 //Provisional - Envia codigo

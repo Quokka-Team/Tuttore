@@ -72,6 +72,9 @@ const StudentSchema = new Schema({
     },
     career:{
       type:String
+    }, 
+    dateCreatedTutor:{
+      type:Date
     }
 });
 
