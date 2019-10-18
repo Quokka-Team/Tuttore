@@ -2,6 +2,9 @@
 
 const mongoose = require('mongoose');
 const Course = require('../models/course');
+const Student = require('../models/student');
+
+
 
 
 
@@ -21,6 +24,10 @@ async function addCourse(req, res){
 }
 
 
+
+
+
+
 //Provisional
 async function getAllCourses(req, res){
     Course.find({}, (err, courses)=>{
@@ -29,6 +36,8 @@ async function getAllCourses(req, res){
         res.status(200).send(courses);
     });
 }
+
+
 
 async function getNewCourses(req, res){
     let numberOfNewCourses = 2;

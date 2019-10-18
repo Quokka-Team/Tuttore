@@ -29,7 +29,7 @@ async function registerTutor(req, res){
 async function addCourseTutor(req, res){
 
     const id_tutor = req.student;
-    const id_course = req.body.courseId;
+    const id_course = req.body.idCourse;
 
     const newCourse ={
         courseId: id_course,
@@ -73,11 +73,15 @@ async function addCourseTutor(req, res){
 
 
 async function getTutor(req, res){
-
+    if(req.body.idTutor == undefined){
+        idTutor = req.student;
+    }
+    else{
+        idTutor = req.body.idTutor;
+    }
     let tutor;
 
-
-    await Student.findOne({_id:req.student}, (err, result) =>{
+    await Student.findOne({_id:idTutor}, (err, result) =>{
         if (err) return res.status(500).send({message: 'Server Failed'});
 
         if(!result) return res.status(404).send({message: 'User does not exist'});
@@ -89,6 +93,7 @@ async function getTutor(req, res){
     });
 
     let newTutor = {
+        idTutor: idTutor,
         name: tutor.name,
         lastName: tutor.lastName,
         email: tutor.email,
@@ -99,7 +104,7 @@ async function getTutor(req, res){
         dateCreatedTutor: tutor.dateCreatedTutor,
         courses:[]
     }
-
+    // add try catch
     newTutor.courses = await getInformationCourses(tutor.courses);
 
     res.send(newTutor);
@@ -125,4 +130,50 @@ async function getInformationCourses(idCourses){
 }
 
 
-module.exports = { registerTutor, addCourseTutor, getTutor}
+
+
+async function getTutorsBySubject(req, res){
+    let id_course = req.body.idCourse;
+
+    let course;
+
+    await Course.findOne({_id:id_course}, (err, result)=>{
+        if (err) return res.status(500).send({message: 'Server Failed'});
+
+        if(!result) return res.status(404).send({message: 'Course does not exist'});
+
+        course = result;
+    });
+
+    let getCourse = {
+        idCourse:id_course,
+        name:course.name,
+        code: course.code,
+        avaibleTutors:[]
+    }
+    getCourse.avaibleTutors = await getInformationTutors(course.avaibleTutors);
+
+    res.send(getCourse);
+
+}
+
+
+async function getInformationTutors(getTutors){
+    let tutors = [];
+    for(let i = 0; i<getTutors.length; i++){
+        let tutor = await Student.findOne({_id:getTutors[i].tutor}).exec();
+        tutors.push({
+            idTutor: tutor.id,
+            name: tutor.name,
+            lastName: tutor.lastName,
+            carrer: tutor.carrer,
+            description: tutor.description,
+            initialDate:getTutors[i].initialDate,
+            gpa: getTutors[i].gpa,
+            score: getTutors[i].score
+        });
+    }
+    return tutors;
+}
+
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsBySubject}
