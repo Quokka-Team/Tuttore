@@ -49,10 +49,10 @@ api.get('/profile', auth, (req, res) => {
 //Permite anadir un curso
 api.get('/addCourse', CourseController.addCourse);
 
+
 api.get('/getAllCourses', CourseController.getAllCourses);
 
 api.get('/getNewCourses', CourseController.getNewCourses);
-
 
 api.get('/AddCareer', CareerController.addCareer);
 
@@ -64,8 +64,16 @@ api.post('/getStudent', auth, StudentController.getStudent);
 //Agregar tutor
 api.post('/registerTutor', auth, TutorController.registerTutor);
 
+
+//Obtener Tutor
+api.post('/getTutor', auth, TutorController.getTutor);
+
+
 //Agregar un nuevo curso
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
+
+
+
 
 
 //Provisional - Envia codigo
