@@ -5,6 +5,7 @@ const StudentController = require('../controllers/studentController');
 const emailNotificationController = require('../controllers/emailNotificationController');
 const CourseController = require('../controllers/courseController');
 const TutorController = require('../controllers/tutorController');
+const CareerController = require('../controllers/careerController');
 
 const auth = require('../middlewares/auth');
 
@@ -48,20 +49,23 @@ api.get('/profile', auth, (req, res) => {
 //Permite anadir un curso
 api.get('/addCourse', CourseController.addCourse);
 
-//Provisional
 api.get('/getAllCourses', CourseController.getAllCourses);
 
 api.get('/getNewCourses', CourseController.getNewCourses);
 
+
+api.get('/AddCareer', CareerController.addCareer);
+
+
 //Obitene los datos del estudiante, se requiere autentificacion
 api.post('/getStudent', auth, StudentController.getStudent);
+
 
 //Agregar tutor
 api.post('/registerTutor', auth, TutorController.registerTutor);
 
 //Agregar un nuevo curso
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
-
 
 
 //Provisional - Envia codigo
