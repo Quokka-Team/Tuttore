@@ -10,7 +10,8 @@ async function addCourse(req, res){
     const course = new Course({
         name:req.body.name,
         code:req.body.code,
-        dateCreated:dateNow
+        dateCreated:dateNow,
+        avaibleTutors:[]
     });
     course.save((err)=>{
         if (err) res.status(500).send({message: `Error adding the course: ${err}`});

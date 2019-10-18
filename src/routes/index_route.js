@@ -59,6 +59,10 @@ api.post('/getStudent', auth, StudentController.getStudent);
 //Agregar tutor
 api.post('/registerTutor', auth, TutorController.registerTutor);
 
+//Agregar un nuevo curso
+api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
+
+
 
 //Provisional - Envia codigo
 api.get('/codeVerification', emailNotificationController.sendCodeVerification);
