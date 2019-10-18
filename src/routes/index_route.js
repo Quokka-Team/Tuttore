@@ -69,6 +69,9 @@ api.post('/registerTutor', auth, TutorController.registerTutor);
 api.post('/getTutor', auth, TutorController.getTutor);
 
 
+//Obtener Tutores por materia
+api.post('/getTutorsByCourse', TutorController.getTutorsBySubject);
+
 //Agregar un nuevo curso
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
 
