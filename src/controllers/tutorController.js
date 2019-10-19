@@ -34,7 +34,8 @@ async function addCourseTutor(req, res){
     const newCourse ={
         courseId: id_course,
         gpa:0,
-        score:0
+        score:0,
+        initialDate: new Date()
     }
 
     const newTutor = {
@@ -213,4 +214,53 @@ async function getInformationTutors(getTutors){
     return tutors;
 }
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse}
+
+
+async function getNewTutors(req, res){
+    let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(5).exec();
+    res.send(tutors);
+}
+
+
+async function getNewTutorsByCourse(req, res){
+    let course = await Course.findOne({_id:req.body.idCourse}).exec();
+    let idTutors =[];
+    for(let i=0; i<course.avaibleTutors.length; i++){
+        idTutors.push({ 
+                        id:course.avaibleTutors[i].tutor, 
+                        initialDate:course.avaibleTutors[i].initialDate,
+                        gpa: course.avaibleTutors[i].gpa,
+                        score: course.avaibleTutors[i].score 
+                    });
+    }
+
+    idTutors.sort(function(a, b){
+        if(a.initialDate<b.initialDate){return 1;}
+        if(a.initialDate>b.initialDate){return -1;}
+        return 0;
+    });
+    idTutors = idTutors.slice(0,5);
+
+    let tutors = [];
+    for(let i = 0; i<idTutors.length; i++){
+        let tutor = await Student.findOne({_id:idTutors[i].id}).exec();
+        tutors.push({
+            idTutor: tutor.id,
+            name: tutor.name,
+            lastName: tutor.lastName,
+            email: tutor.email,
+            carrer: tutor.carrer,
+            description: tutor.description,
+            initialDate:idTutors[i].initialDate,
+            gpa: idTutors[i].gpa,
+            score: idTutors[i].score
+        });
+    }
+    
+    res.send(tutors);
+
+}
+
+
+
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse}
