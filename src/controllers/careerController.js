@@ -18,7 +18,19 @@ async function addCareer(req, res){
     });
 };
 
+
+async function getAllCareers(req, res){
+    Career.find({}, (err, careers)=>{
+        if (err) return res.status(500).send({message: 'Server Failed'});
+
+        res.status(200).send(careers);
+    });
+};
+
+
+
 module.exports = {
-    addCareer
+    addCareer,
+    getAllCareers
 };
 

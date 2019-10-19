@@ -49,13 +49,17 @@ api.get('/profile', auth, (req, res) => {
 //Permite anadir un curso
 api.get('/addCourse', CourseController.addCourse);
 
-
+// Obetener todos los tutores
 api.get('/getAllCourses', CourseController.getAllCourses);
 
+// Obtener los n cursos mas nuevos
 api.get('/getNewCourses', CourseController.getNewCourses);
 
+// agregar una carrera
 api.get('/AddCareer', CareerController.addCareer);
 
+// Obtener todas las carreras
+api.get('/getAllCareers', CareerController.getAllCareers);
 
 //Obitene los datos del estudiante, se requiere autentificacion
 api.post('/getStudent', auth, StudentController.getStudent);
