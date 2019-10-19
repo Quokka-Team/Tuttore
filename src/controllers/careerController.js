@@ -12,7 +12,7 @@ async function addCareer(req, res){
     });
 
     career.save((err) =>{
-        if (err) res.status(500).send({message: `Error adding the career: ${err}`});
+        if (err) res.status(500).send({message: `Error adding the career`, err:err});
 
         return res.status(200).send({message: 'Career succesfully added'});
     });
@@ -21,7 +21,7 @@ async function addCareer(req, res){
 
 async function getAllCareers(req, res){
     Career.find({}, (err, careers)=>{
-        if (err) return res.status(500).send({message: 'Server Failed'});
+        if (err) return res.status(500).send({message: 'Server Failed', err:err});
 
         res.status(200).send(careers);
     });

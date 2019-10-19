@@ -14,40 +14,27 @@ const api = express.Router();
 
 //Ruta de Bienvenida
 api.get('/', (req, res) => {
-    res.send("Estas en al ruta '/' con el metodo get ");
+    res.status(200).send({message:"You are on the '/' route with the get method"});
 });
-
-api.post('/', (req, res) => {
-    res.send("Estas en al ruta '/' con el metodo post ");
-});
-
-
 
 //Ruta para realizar registro
-
-api.get('/signUp', (req, res) => {
-    res.send("Estas en al ruta '/signUp' con el metodo get");
-});
-
 api.post('/signUp', StudentController.signUp);
 
-
 //Ruta para loguearse
-api.get('/signIn', (req, res) => {
-    res.send("Estas en al ruta '/singIn' con el metodo get");
-});
-
 api.post('/signIn', StudentController.signIn);
-
 
 //Ruta de Prueba
 api.get('/profile', auth, (req, res) => {
-    res.send("Estas en al ruta '/profile' con el metodo get y te ha autentificado");
+    res.status(200).send("You are on the '/ profile' route with the get method and it has authenticated you");
 });
 
+//Obitene los datos del estudiante, se requiere autentificacion
+api.get('/getStudent', auth, StudentController.getStudent);
 
-//Permite anadir un curso
-api.get('/addCourse', CourseController.addCourse);
+
+
+//Permite anadir un curso'
+api.post('/addCourse', CourseController.addCourse);
 
 // Obetener todos los tutores
 api.get('/getAllCourses', CourseController.getAllCourses);
@@ -55,30 +42,27 @@ api.get('/getAllCourses', CourseController.getAllCourses);
 // Obtener los n cursos mas nuevos
 api.get('/getNewCourses', CourseController.getNewCourses);
 
+
+
 // agregar una carrera
-api.get('/AddCareer', CareerController.addCareer);
+api.post('/AddCareer', CareerController.addCareer);
 
 // Obtener todas las carreras
 api.get('/getAllCareers', CareerController.getAllCareers);
 
-//Obitene los datos del estudiante, se requiere autentificacion
-api.post('/getStudent', auth, StudentController.getStudent);
 
 
 //Agregar tutor
 api.post('/registerTutor', auth, TutorController.registerTutor);
 
-
-
-//Obtener Tutor
-api.post('/getTutor', auth, TutorController.getTutor);
-
-
-//Obtener Tutores por materia
-api.post('/getTutorsByCourse', TutorController.getTutorsByCourse);
-
 //Agregar un nuevo curso
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
+
+//Obtener Tutor
+api.get('/getTutor', auth, TutorController.getTutor);
+
+//Obtener Tutores por materia
+api.get('/getTutorsByCourse', TutorController.getTutorsByCourse);
 
 //Get new tutors
 api.get('/getNewTutors', TutorController.getNewTutors);
