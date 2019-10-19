@@ -14,20 +14,25 @@ async function signUp(req, res){
         password : req.body.password,
         career: req.body.carrer,
         gpa:req.body.gpa,
-        phoneNumber: req.body.phoneNumber
+        phoneNumber: req.body.phoneNumber,
+        isTutor: false
     });
-    const existingStudent = await Student.findOne({email:student.email});
+    let existingStudent;
+    try{
+        existingStudent = await Student.findOne({email:student.email});
+    }
+    catch(err){
+        res.status(500).send({message:'Error server validation', err:err})
+    }    
+
 
     if (existingStudent) {
-
-        return res.status(400).send({message: 'User already exist'});
+        return res.status(403).send({message: 'User already exist'});
     } else {
         student.save((err)=>{
-            if (err) res.status(500).send({message: `Error creating user: ${err}`});
+            if (err) res.status(500).send({message: `Error creating user`, err:err});
             
-            //Código original - funcional
-            //return res.status(200).send({token: service.createToken(student)})
-            return res.status(200).send({message: 'User registered sucessfully'});
+            return res.status(201).send({message: 'User registered sucessfully'});
         });
     }
 
@@ -42,13 +47,11 @@ function signIn(req, res){
         
         if(student.comparePassword(req.body.password)){
             res.status(200).send({
-                message: 'Te has logueado correctamente',
+                message: 'You have successfully logged in',
                 token: service.createToken(student)
             });
         }  else {
-            res.status(400).send({
-                message: 'Contraseña incorrecta'
-            });
+            res.status(400).send({message: 'Incorrect password'});
         }    
     });
 }
