@@ -74,17 +74,15 @@ api.post('/getTutor', auth, TutorController.getTutor);
 
 
 //Obtener Tutores por materia
-api.post('/getTutorsByCourse', TutorController.getTutorsBySubject);
+api.post('/getTutorsByCourse', TutorController.getTutorsByCourse);
 
 //Agregar un nuevo curso
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
 
 
 
-
-
-//Provisional - Envia codigo
-api.get('/codeVerification', emailNotificationController.sendCodeVerification);
+//Envia codigo de verificacion
+api.get('/verificationCode', emailNotificationController.sendCodeVerification);
 
 
 //Provisional
