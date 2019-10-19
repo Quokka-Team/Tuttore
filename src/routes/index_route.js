@@ -81,10 +81,8 @@ api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
 
 
 
-
-
-//Provisional - Envia codigo
-api.get('/codeVerification', emailNotificationController.sendCodeVerification);
+//Envia codigo de verificacion
+api.get('/verificationCode', emailNotificationController.sendCodeVerification);
 
 
 //Provisional
