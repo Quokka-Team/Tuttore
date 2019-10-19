@@ -19,8 +19,9 @@ async function addCourse(req, res){
     course.save((err)=>{
         if (err) res.status(500).send({message: `Error adding the course: ${err}`});
 
-        return res.status(200).send({message: 'Course succesfully added'});
+        res.status(200).send({message: 'Course succesfully added'});
     });
+
 }
 
 

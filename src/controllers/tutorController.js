@@ -73,27 +73,55 @@ async function addCourseTutor(req, res){
 
 
 async function getTutor(req, res){
-    if(req.body.idTutor == undefined){
+    let idTutor;
+    if(req.body.idTutor == 'this'){
         idTutor = req.student;
     }
     else{
         idTutor = req.body.idTutor;
     }
+
+    //Callback - funciona de manera parcial
+    // let tutor;
+
+    // await Student.findOne({_id:idTutor}, (err, result) =>{
+    //     if (err) return res.status(500).send({message: 'Server Failed'});
+
+    //     if(!result) return res.status(404).send({message: 'User does not exist'});
+
+    //     if(!result.isTutor) return res.status(404).send({message: 'Yutor does not exist'});
+        
+    //     tutor = result;
+        
+    // });
+
+    // let tutor;
+    
+
+    //Promise no funciona
+    // Student.findOne({_id:idTutor}).exec()
+    //     .then(response =>{
+    //         if(!response) return res.status(404).send({message: 'User does not exist'});
+
+    //         if(!response.isTutor) return res.status(404).send({message: 'Yutor does not exist'});
+            
+    //         tutor = response;
+    //     })
+    //     .catch( err =>{
+    //         if (err) return res.status(500).send({message: 'Server Failed', err});
+    //     });
+    
+    // add try catch
+
     let tutor;
-
-    await Student.findOne({_id:idTutor}, (err, result) =>{
-        if (err) return res.status(500).send({message: 'Server Failed'});
-
-        if(!result) return res.status(404).send({message: 'User does not exist'});
-
-        if(!result.isTutor) return res.status(404).send({message: 'Yutor does not exist'});
-        
-        tutor = result;
-        
-    });
-
+    try{
+        tutor = await Student.findOne({_id:idTutor}).exec();
+    }
+    catch(error){
+        res.send(error);
+    }
+    
     let newTutor = {
-        idTutor: idTutor,
         name: tutor.name,
         lastName: tutor.lastName,
         email: tutor.email,
@@ -104,6 +132,7 @@ async function getTutor(req, res){
         dateCreatedTutor: tutor.dateCreatedTutor,
         courses:[]
     }
+    
     // add try catch
     newTutor.courses = await getInformationCourses(tutor.courses);
 
@@ -132,19 +161,27 @@ async function getInformationCourses(idCourses){
 
 
 
-async function getTutorsBySubject(req, res){
+async function getTutorsByCourse(req, res){
     let id_course = req.body.idCourse;
 
     let course;
 
-    await Course.findOne({_id:id_course}, (err, result)=>{
-        if (err) return res.status(500).send({message: 'Server Failed'});
 
-        if(!result) return res.status(404).send({message: 'Course does not exist'});
+    //Callback - funciona parcialmente
+    // await Course.findOne({_id:id_course}, (err, result)=>{
+    //     if (err) return res.status(500).send({message: 'Server Failed'});
 
-        course = result;
-    });
+    //     if(!result) return res.status(404).send({message: 'Course does not exist'});
 
+    //     course = result;
+    // });
+    
+    try{
+        course = await Course.findOne({_id:id_course}).exec();
+    }
+    catch(error){
+        res.send(error);
+    }
     let getCourse = {
         idCourse:id_course,
         name:course.name,
@@ -176,4 +213,4 @@ async function getInformationTutors(getTutors){
     return tutors;
 }
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsBySubject}
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse}
