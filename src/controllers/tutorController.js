@@ -213,4 +213,11 @@ async function getInformationTutors(getTutors){
     return tutors;
 }
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse}
+
+
+async function getNewTutors(req, res){
+    let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(5).exec();
+    res.send(tutors);
+
+}
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors}

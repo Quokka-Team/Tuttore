@@ -69,6 +69,7 @@ api.post('/getStudent', auth, StudentController.getStudent);
 api.post('/registerTutor', auth, TutorController.registerTutor);
 
 
+
 //Obtener Tutor
 api.post('/getTutor', auth, TutorController.getTutor);
 
@@ -79,6 +80,8 @@ api.post('/getTutorsByCourse', TutorController.getTutorsByCourse);
 //Agregar un nuevo curso
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
 
+//Get new tutors
+api.get('/getNewTutors', TutorController.getNewTutors);
 
 
 //Envia codigo de verificacion
