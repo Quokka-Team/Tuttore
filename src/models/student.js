@@ -15,6 +15,9 @@ const CourseEmbeddedTutorSchema = new Schema({
   },
   score:{
       type: Number
+  },
+  initialDate:{
+      type: Date
   }
 });
 

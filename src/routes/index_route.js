@@ -83,6 +83,8 @@ api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
 //Get new tutors
 api.get('/getNewTutors', TutorController.getNewTutors);
 
+//Get new tutors bt course
+api.get('/getNewTutorsByCourse', TutorController.getNewTutorsByCourse);
 
 //Envia codigo de verificacion
 api.get('/verificationCode', emailNotificationController.sendCodeVerification);
