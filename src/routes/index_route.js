@@ -40,7 +40,7 @@ api.post('/addCourse', CourseController.addCourse);
 api.get('/getAllCourses', CourseController.getAllCourses);
 
 // Obtener los n cursos mas nuevos
-api.get('/getNewCourses', CourseController.getNewCourses);
+api.get('/getNewCourses/:numberCourses', CourseController.getNewCourses);
 
 
 
@@ -59,19 +59,19 @@ api.post('/registerTutor', auth, TutorController.registerTutor);
 api.post('/addCourseTutor', auth, TutorController.addCourseTutor);
 
 //Obtener Tutor
-api.get('/getTutor', auth, TutorController.getTutor);
+api.get('/getTutor/:idTutor', auth, TutorController.getTutor);
 
 //Obtener Tutores por materia
-api.get('/getTutorsByCourse', TutorController.getTutorsByCourse);
+api.get('/getTutorsByCourse/:idCourse', TutorController.getTutorsByCourse);
 
 //Get new tutors
-api.get('/getNewTutors', TutorController.getNewTutors);
+api.get('/getNewTutors/:numberTutors', TutorController.getNewTutors);
 
 //Get new tutors bt course
-api.get('/getNewTutorsByCourse', TutorController.getNewTutorsByCourse);
+api.get('/getNewTutorsByCourse/:idCourse/:numberTutors', TutorController.getNewTutorsByCourse);
 
 //Envia codigo de verificacion
-api.get('/verificationCode', emailNotificationController.sendCodeVerification);
+api.get('/verificationCode/:email', emailNotificationController.sendCodeVerification);
 
 
 //Provisional

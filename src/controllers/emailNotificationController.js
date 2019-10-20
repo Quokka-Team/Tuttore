@@ -7,7 +7,7 @@ const createTemplateProvisional = require('../templates/templateSendEmailProvisi
 
 
 async function sendCodeVerification(req, res){
-    const email = req.body.email;
+    const email = req.params.email;
     const number = `${getRandomInt(0,9)}${getRandomInt(0,9)}${getRandomInt(0,9)}${getRandomInt(0,9)}${getRandomInt(0,9)}${getRandomInt(0,9)}`;
     
     let replacementTags = {
