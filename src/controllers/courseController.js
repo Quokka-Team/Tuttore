@@ -40,8 +40,8 @@ async function getAllCourses(req, res){
 
 
 async function getNewCourses(req, res){
-    let numberOfNewCourses = parseInt(req.body.numberCourses);
-    Course.find({}).sort({dateCreated: 'asc'}).select('-avaibleTutors -__v ').limit(numberOfNewCourses).exec( (err, courses) => {
+    let numberOfNewCourses = parseInt(req.params.numberCourses);
+    Course.find({}).sort({dateCreated: 'desc'}).select('-avaibleTutors -__v ').limit(numberOfNewCourses).exec( (err, courses) => {
         if (err) return res.status(500).send({message: 'Server Failed'});
         res.status(200).send(courses);
     });

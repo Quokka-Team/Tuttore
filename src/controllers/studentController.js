@@ -70,7 +70,8 @@ function getStudent(req, res){
             email:student.email,
             career: student.career,
             gpa:student.gpa,
-            phoneNumber: student.phoneNumber
+            phoneNumber: student.phoneNumber,
+            isTutor: student.isTutor
         });
     });
 }

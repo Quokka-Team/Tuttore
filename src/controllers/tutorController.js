@@ -76,11 +76,11 @@ async function addCourseTutor(req, res){
 
 async function getTutor(req, res){
     let idTutor;
-    if(req.body.idTutor == 'this'){
+    if(req.params.idTutor == 'this'){
         idTutor = req.student;
     }
     else{
-        idTutor = req.body.idTutor;
+        idTutor = req.params.idTutor;
     }
     let tutor;
     try{
@@ -141,7 +141,7 @@ async function getInformationCourses(idCourses){
 
 
 async function getTutorsByCourse(req, res){
-    let id_course = req.body.idCourse;
+    let id_course = req.params.idCourse;
 
     let course;
     
@@ -195,7 +195,7 @@ async function getInformationTutors(getTutors){
 
 
 async function getNewTutors(req, res){
-    let numberTutors = parseInt(req.body.numberTutors);
+    let numberTutors = parseInt(req.params.numberTutors);
     try{
         let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(numberTutors).select('-password -availability -chat -__v -courses._id').exec();
         res.status(200).send(tutors);
@@ -211,9 +211,9 @@ async function getNewTutors(req, res){
 
 async function getNewTutorsByCourse(req, res){
     let course;
-    let numberTutors = parseInt(req.body.numberTutors);
+    let numberTutors = parseInt(req.params.numberTutors);
     try{
-        course = await Course.findOne({_id:req.body.idCourse}).exec();
+        course = await Course.findOne({_id:req.params.idCourse}).exec();
     }
     catch(err){
         res.status(500).send({
