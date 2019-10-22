@@ -12,7 +12,7 @@ async function signUp(req, res){
         lastName : req.body.lastName,
         email: req.body.email,
         password : req.body.password,
-        career: req.body.carrer,
+        career: req.body.career,
         gpa:req.body.gpa,
         phoneNumber: req.body.phoneNumber,
         isTutor: false
@@ -39,7 +39,7 @@ async function signUp(req, res){
 }
 
 //Login
-function signIn(req, res){
+async function signIn(req, res){
     Student.findOne({email:req.body.email}, (err, student)=>{
         if (err) return res.status(500).send({message: 'Server Failed'});
 
@@ -58,7 +58,7 @@ function signIn(req, res){
 
 
 //Obtener estudiante
-function getStudent(req, res){
+async function getStudent(req, res){
     Student.findOne({_id:req.student}, (err, student) =>{
         if (err) return res.status(500).send({message: 'Server Failed'});
 
@@ -79,7 +79,7 @@ function getStudent(req, res){
 
 
 //Provisional
-function getAllStudents(req, res){
+async function getAllStudents(req, res){
     Student.find({}, (err, students)=>{
         if (err) return res.status(500).send({message: 'Server Failed'});
 
@@ -87,9 +87,40 @@ function getAllStudents(req, res){
     });
 }
 
+
+
+async function updateStudent(req, res){
+    let id_student = req.student;
+
+    updateStudent = {
+        name : req.body.name,
+        lastName : req.body.lastName,
+        email: req.body.email,
+        career: req.body.career,
+        gpa:req.body.gpa,
+        phoneNumber: req.body.phoneNumber
+    };
+
+    await Student.updateOne({ _id: id_student }, updateStudent)
+    .exec(function (err, student){
+        if (err) {
+            return res.status(500).send({
+                message: 'Server Failed updating student',
+                err: err
+            });
+        }
+
+        res.status(200).send({
+            message : 'Student updated succesfully'
+        });
+    });
+}
+
+
 module.exports = {
     signUp,
     signIn,
     getStudent,
-    getAllStudents
+    getAllStudents,
+    updateStudent
 }

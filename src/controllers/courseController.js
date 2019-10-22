@@ -27,9 +27,6 @@ async function addCourse(req, res){
 
 
 
-
-
-//Provisional
 async function getAllCourses(req, res){
    Course.find({}, (err, courses)=>{
         if (err) return res.status(500).send({message: 'Server Failed'});
