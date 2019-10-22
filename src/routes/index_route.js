@@ -31,7 +31,7 @@ api.get('/profile', auth, (req, res) => {
 //Obitene los datos del estudiante, se requiere autentificacion
 api.get('/getStudent', auth, StudentController.getStudent);
 
-
+api.post('/updateStudent', auth, StudentController.updateStudent);
 
 //Permite anadir un curso'
 api.post('/addCourse', CourseController.addCourse);
