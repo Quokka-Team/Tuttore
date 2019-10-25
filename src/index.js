@@ -14,7 +14,11 @@ const options = {
 
 
 //Connectando a la base de datos y luego iniciando el servidor
-mongoose.connect(config.db,(err, res)=>{
+mongoose.connect(config.db,
+    { 
+        useNewUrlParser: true,
+        useUnifiedTopology: true 
+    } ,(err, res)=>{
     if(err) throw err;
     console.log('Conexion con MongoDB establecida');
 
