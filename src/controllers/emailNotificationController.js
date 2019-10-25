@@ -1,6 +1,6 @@
 //const AWS = require('../services/aws');
 
-const AWS = require('../scripts-aws/ses/configSes');
+const AWS = require('../services/aws');
 
 const createTemplateProvisional = require('../templates/templateSendEmailProvisional'); 
 
@@ -36,10 +36,13 @@ async function sendCodeVerification(req, res){
 
     sendPromise.then(
         function(data) {
-        res.send(replacementTags);
+        res.status(200).send({
+            email: email,
+            code: number
+        });
     }).catch(
         function(err) {
-        res.send(err);
+        res.status(500).send({message: 'Error send verification code',  err:err});
     });
 }
 
