@@ -35,7 +35,7 @@ const StudentSchema = new Schema({
         type: String
     },
     career: {
-        type: Schema.Types.ObjectId
+        type: String
     },
     gpa: {
         type: Number
