@@ -13,3 +13,5 @@ const CareerSchema = new Schema({
         required: true
     }
 });
+
+module.exports = mongoose.model('Career', CareerSchema);

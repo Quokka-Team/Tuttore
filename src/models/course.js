@@ -3,6 +3,22 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+const TuttorEmbeddedCourseSchema = new Schema({
+    initialDate:{
+      type: Date
+    }, 
+    tutor:{
+      type: Schema.Types.ObjectId
+    },
+    gpa:{
+      type: Number
+    },
+    score:{
+      type: Number
+    }
+});
+
 const CourseSchema = new Schema({
     name: {
         type: String,
@@ -12,22 +28,11 @@ const CourseSchema = new Schema({
         type: String,
         required: true
     },
-    avaibleTutors: [{
-        initialDate: {
-          type: Date,
-          required: true
-        },
-        tutor: {
-          type: Schema.Types.ObjectId,
-          required: true
-        },
-        gpa: {
-          type: Number,
-          required: true
-        },
-        score: {
-          type: Number,
-          required: true
-        }
-    }]
+    dateCreated : {
+        type: Date
+    },
+    avaibleTutors: [TuttorEmbeddedCourseSchema]
 });
+
+
+module.exports = mongoose.model('Course', CourseSchema);
