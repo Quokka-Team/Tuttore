@@ -4,6 +4,23 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
+
+const CourseEmbeddedTutorSchema = new Schema({
+  courseId: {
+      type: Schema.Types.ObjectId,
+      required: true
+  },
+  gpa: {
+      type: Number
+  },
+  score:{
+      type: Number
+  },
+  initialDate:{
+      type: Date
+  }
+});
+
 const StudentSchema = new Schema({
     name: {
         type: String
@@ -18,7 +35,7 @@ const StudentSchema = new Schema({
         type: String
     },
     career: {
-        type: Schema.Types.ObjectId
+        type: String
     },
     gpa: {
         type: Number
@@ -26,17 +43,8 @@ const StudentSchema = new Schema({
     phoneNumber: {
         type: String
     },
-    courses: [{
-        courseId: {
-          type: Schema.Types.ObjectId
-        },
-        gpa: {
-          type: Number
-        },
-        score: {
-          type: Number
-        }
-    }],
+    courses:[CourseEmbeddedTutorSchema],
+
     profilePicture: {
         data: {
           type: Buffer
@@ -47,6 +55,9 @@ const StudentSchema = new Schema({
     },
     description: {
         type: String
+    },
+    isTutor : {
+        type: Boolean
     },
     availability: [{
         initialDate: {
@@ -63,7 +74,16 @@ const StudentSchema = new Schema({
         chatId: {
           type: Schema.Types.ObjectId
         }
-    }]
+    }],
+    dateCreated: {
+        type: Date
+    },
+    career:{
+      type:String
+    }, 
+    dateCreatedTutor:{
+      type:Date
+    }
 });
 
 
