@@ -7,34 +7,43 @@ const service = require('../services/index_services');
 
 //Registro
 async function signUp(req, res){
-    const student = new Student({
-        name : req.body.name,
-        lastName : req.body.lastName,
-        email: req.body.email,
-        password : req.body.password,
-        career: req.body.career,
-        gpa:req.body.gpa,
-        phoneNumber: req.body.phoneNumber,
-        isTutor: false
+
+    
+
+    let profileImage = req.files.profileImage;
+    profileImage.mv(`src/tmp/${profileImage.name}`, err=>{
+        if(err) return res.status(500).send({ message : err })
+
+        return res.status(200).send({ message : 'File upload' })
     });
-    let existingStudent;
-    try{
-        existingStudent = await Student.findOne({email:student.email});
-    }
-    catch(err){
-        res.status(500).send({message:'Error server validation', err:err})
-    }    
+    // const student = new Student({
+    //     name : req.body.name,
+    //     lastName : req.body.lastName,
+    //     email: req.body.email,
+    //     password : req.body.password,
+    //     career: req.body.career,
+    //     gpa:req.body.gpa,
+    //     phoneNumber: req.body.phoneNumber,
+    //     isTutor: false
+    // });
+    // let existingStudent;
+    // try{
+    //     existingStudent = await Student.findOne({email:student.email});
+    // }
+    // catch(err){
+    //     res.status(500).send({message:'Error server validation', err:err})
+    // }    
 
 
-    if (existingStudent) {
-        return res.status(403).send({message: 'User already exist'});
-    } else {
-        student.save((err)=>{
-            if (err) res.status(500).send({message: `Error creating user`, err:err});
+    // if (existingStudent) {
+    //     return res.status(403).send({message: 'User already exist'});
+    // } else {
+    //     student.save((err)=>{
+    //         if (err) res.status(500).send({message: `Error creating user`, err:err});
             
-            return res.status(201).send({message: 'User registered sucessfully'});
-        });
-    }
+    //         return res.status(201).send({message: 'User registered sucessfully'});
+    //     });
+    // }
 
 }
 
