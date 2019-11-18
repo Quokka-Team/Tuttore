@@ -3,47 +3,48 @@
 const mongoose = require('mongoose');
 const Student = require('../models/student');
 const service = require('../services/index_services');
+const GoogleDriveAPI = require('../services/googleDriveAPI');
+
+const fs = require('fs');
 
 
 //Registro
 async function signUp(req, res){
 
+    let profilePicture = req.files.profilePicture;
+
+    let idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
     
-
-    let profileImage = req.files.profileImage;
-    profileImage.mv(`src/tmp/${profileImage.name}`, err=>{
-        if(err) return res.status(500).send({ message : err })
-
-        return res.status(200).send({ message : 'File upload' })
+    const student = new Student({
+        name : req.body.name,
+        lastName : req.body.lastName,
+        email: req.body.email,
+        password : req.body.password,
+        career: req.body.career,
+        gpa:req.body.gpa,
+        phoneNumber: req.body.phoneNumber,
+        isTutor: false,
+        profilePicture:idProfilePicture
+        
     });
-    // const student = new Student({
-    //     name : req.body.name,
-    //     lastName : req.body.lastName,
-    //     email: req.body.email,
-    //     password : req.body.password,
-    //     career: req.body.career,
-    //     gpa:req.body.gpa,
-    //     phoneNumber: req.body.phoneNumber,
-    //     isTutor: false
-    // });
-    // let existingStudent;
-    // try{
-    //     existingStudent = await Student.findOne({email:student.email});
-    // }
-    // catch(err){
-    //     res.status(500).send({message:'Error server validation', err:err})
-    // }    
+    let existingStudent;
+    try{
+        existingStudent = await Student.findOne({email:student.email});
+    }
+    catch(err){
+        res.status(500).send({message:'Error server validation', err:err})
+    }    
 
 
-    // if (existingStudent) {
-    //     return res.status(403).send({message: 'User already exist'});
-    // } else {
-    //     student.save((err)=>{
-    //         if (err) res.status(500).send({message: `Error creating user`, err:err});
+    if (existingStudent) {
+        return res.status(403).send({message: 'User already exist'});
+    } else {
+        student.save((err)=>{
+            if (err) res.status(500).send({message: `Error creating user`, err:err});
             
-    //         return res.status(201).send({message: 'User registered sucessfully'});
-    //     });
-    // }
+            return res.status(201).send({message: 'User registered sucessfully'});
+        });
+    }
 
 }
 
@@ -72,7 +73,7 @@ async function getStudent(req, res){
         if (err) return res.status(500).send({message: 'Server Failed'});
 
         if(!student) return res.status(404).send({message: 'User does not exist'});
-
+        
         res.status(200).send({
             name:student.name,
             lastName: student.lastName,
@@ -80,9 +81,23 @@ async function getStudent(req, res){
             career: student.career,
             gpa:student.gpa,
             phoneNumber: student.phoneNumber,
-            isTutor: student.isTutor
+            isTutor: student.isTutor,
+            idProfilePicture: student.profilePicture
         });
     });
+}
+
+
+//Comentar
+async function getStudentProfilePicture(req, res){
+    let idProfilePicture = req.params.idProfilePicture;
+    await GoogleDriveAPI.downlandProfilePicture(idProfilePicture, `${idProfilePicture}.jpg`);
+    console.log('poil');
+    let data = fs.readFileSync(`src/tmp/${idProfilePicture}.jpg`);
+    fs.unlinkSync(`src/tmp/${idProfilePicture}.jpg`);
+    
+    res.writeHead(200, {'Content-Type': 'image/jpeg'});
+    res.end(data); 
 }
 
 
@@ -126,10 +141,13 @@ async function updateStudent(req, res){
 }
 
 
+
+
 module.exports = {
     signUp,
     signIn,
     getStudent,
     getAllStudents,
-    updateStudent
+    updateStudent,
+    getStudentProfilePicture
 }

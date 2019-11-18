@@ -6,7 +6,7 @@ const emailNotificationController = require('../controllers/emailNotificationCon
 const CourseController = require('../controllers/courseController');
 const TutorController = require('../controllers/tutorController');
 const CareerController = require('../controllers/careerController');
-
+const PictureController = require('../controllers/pictureController');
 const auth = require('../middlewares/auth');
 
 
@@ -78,5 +78,10 @@ api.get('/verificationCode/:email', emailNotificationController.sendCodeVerifica
 api.get('/getAllStudents', StudentController.getAllStudents);
 
 
+
+//COmentar - Arreglar
+api.get('/getStudentProfilePicture/:idProfilePicture', StudentController.getStudentProfilePicture)
+
+api.get('/getPicture/:idPicture', PictureController.getPicture)
 
 module.exports = api;
