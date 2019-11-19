@@ -94,6 +94,7 @@ async function getTutor(req, res){
     }
     
     let newTutor = {
+        idTutor: tutor._id,
         name: tutor.name,
         lastName: tutor.lastName,
         email: tutor.email,
@@ -102,6 +103,7 @@ async function getTutor(req, res){
         phoneNumber: tutor.phoneNumber,
         description: tutor.description,
         dateCreatedTutor: tutor.dateCreatedTutor,
+        idProfilePicture: tutor.profilePicture,
         courses:[]
     }
     
@@ -141,6 +143,7 @@ async function getInformationCourses(idCourses){
 
 
 async function getTutorsByCourse(req, res){
+
     let id_course = req.params.idCourse;
 
     let course;
@@ -154,6 +157,7 @@ async function getTutorsByCourse(req, res){
             err: err
         });
     }
+
     let getCourse = {
         idCourse:id_course,
         name:course.name,
@@ -186,7 +190,8 @@ async function getInformationTutors(getTutors){
             description: tutor.description,
             initialDate:getTutors[i].initialDate,
             gpa: getTutors[i].gpa,
-            score: getTutors[i].score
+            score: getTutors[i].score,
+            idProfilePicture: tutor.profilePicture
         });
     }
     return tutors;
@@ -197,7 +202,7 @@ async function getInformationTutors(getTutors){
 async function getNewTutors(req, res){
     let numberTutors = parseInt(req.params.numberTutors);
     try{
-        let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(numberTutors).select('-password -availability -chat -__v -courses._id').exec();
+        let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(numberTutors).select('-password -availability -chat -__v -courses._id' ).exec();
         res.status(200).send(tutors);
     }
     catch(err){
@@ -254,7 +259,8 @@ async function getNewTutorsByCourse(req, res){
                 description: tutor.description,
                 initialDate:idTutors[i].initialDate,
                 gpa: idTutors[i].gpa,
-                score: idTutors[i].score
+                score: idTutors[i].score,
+                idProfilePicture: tutor.profilePicture
             });
         }
     }

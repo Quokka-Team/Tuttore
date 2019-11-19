@@ -11,25 +11,10 @@ const fs = require('fs');
 //Registro
 async function signUp(req, res){
 
-    let profilePicture = req.files.profilePicture;
-
-    let idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
     
-    const student = new Student({
-        name : req.body.name,
-        lastName : req.body.lastName,
-        email: req.body.email,
-        password : req.body.password,
-        career: req.body.career,
-        gpa:req.body.gpa,
-        phoneNumber: req.body.phoneNumber,
-        isTutor: false,
-        profilePicture:idProfilePicture
-        
-    });
     let existingStudent;
     try{
-        existingStudent = await Student.findOne({email:student.email});
+        existingStudent = await Student.findOne({email:req.body.email});
     }
     catch(err){
         res.status(500).send({message:'Error server validation', err:err})
@@ -38,7 +23,24 @@ async function signUp(req, res){
 
     if (existingStudent) {
         return res.status(403).send({message: 'User already exist'});
-    } else {
+    } 
+    else {
+        let profilePicture = req.files.profilePicture;
+
+        let idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
+        
+        const student = new Student({
+            name : req.body.name,
+            lastName : req.body.lastName,
+            email: req.body.email,
+            password : req.body.password,
+            career: req.body.career,
+            gpa:req.body.gpa,
+            phoneNumber: req.body.phoneNumber,
+            isTutor: false,
+            profilePicture:idProfilePicture
+            
+        });
         student.save((err)=>{
             if (err) res.status(500).send({message: `Error creating user`, err:err});
             
