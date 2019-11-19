@@ -83,6 +83,9 @@ const StudentSchema = new Schema({
     }, 
     dateCreatedTutor:{
       type:Date
+    },
+    profilePicture:{
+        type:String
     }
 });
 
