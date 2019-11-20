@@ -89,6 +89,9 @@ const StudentSchema = new Schema({
     },
     profilePicture:{
         type:String
+    },
+    googleUser:{
+        type:Boolean
     }
 });
 

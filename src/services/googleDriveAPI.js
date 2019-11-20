@@ -18,7 +18,11 @@ const drive = google.drive({ version: 'v3', auth });
 async function uploadProfileImage(profilePicture, nameProfilePicture){
     
     await profilePicture.mv(`src/tmp/${nameProfilePicture}`, err=>{
-        if(err) return res.status(500).send({ message : 'No se ha podido cargar la imagen' })
+        // if(err) return res.status(500).send({ message : 'No se ha podido cargar la imagen' })
+        if(err){
+            return;            
+        }
+
     });
 
 
