@@ -10,7 +10,6 @@ const fs = require('fs');
 
 //Registro
 async function signUp(req, res){
-
     
     let existingStudent;
     try{
@@ -25,6 +24,8 @@ async function signUp(req, res){
         return res.status(403).send({message: 'User already exist'});
     } 
     else {
+        
+
         let profilePicture = req.files.profilePicture;
 
         let idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
