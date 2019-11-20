@@ -14,6 +14,7 @@ async function registerTutor(req, res){
     const addFields = {
         courses: [],
         description: req.body.description,
+        price : req.body.price,
         isTutor: true,
         dateCreatedTutor: new Date()
     };
@@ -102,6 +103,7 @@ async function getTutor(req, res){
         gpa: tutor.gpa, 
         phoneNumber: tutor.phoneNumber,
         description: tutor.description,
+        price: tutor.price,
         dateCreatedTutor: tutor.dateCreatedTutor,
         idProfilePicture: tutor.profilePicture,
         courses:[]
@@ -188,6 +190,7 @@ async function getInformationTutors(getTutors){
             lastName: tutor.lastName,
             carrer: tutor.carrer,
             description: tutor.description,
+            price: tutor.price,
             initialDate:getTutors[i].initialDate,
             gpa: getTutors[i].gpa,
             score: getTutors[i].score,
@@ -257,6 +260,7 @@ async function getNewTutorsByCourse(req, res){
                 email: tutor.email,
                 carrer: tutor.carrer,
                 description: tutor.description,
+                price: tutor.price,
                 initialDate:idTutors[i].initialDate,
                 gpa: idTutors[i].gpa,
                 score: idTutors[i].score,
