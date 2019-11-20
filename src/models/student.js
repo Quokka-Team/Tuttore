@@ -21,6 +21,23 @@ const CourseEmbeddedTutorSchema = new Schema({
   }
 });
 
+const EventEmbeddedTutorSchema = new Schema({
+    eventId: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
+    title: {
+        type: String
+    },
+    start:{
+        type: Date
+    },
+    end:{
+        type: Date
+    }
+  });
+
+
 const StudentSchema = new Schema({
     name: {
         type: String
