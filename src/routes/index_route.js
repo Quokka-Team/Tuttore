@@ -8,7 +8,7 @@ const TutorController = require('../controllers/tutorController');
 const CareerController = require('../controllers/careerController');
 const PictureController = require('../controllers/pictureController');
 const auth = require('../middlewares/auth');
-
+const googleAuth = require('../middlewares/googleAuth');
 
 const api = express.Router();
 
@@ -32,6 +32,9 @@ api.get('/profile', auth, (req, res) => {
 api.get('/getStudent', auth, StudentController.getStudent);
 
 api.put('/updateStudent', auth, StudentController.updateStudent);
+
+api.get('/typeStudent/:email', StudentController.typeStudent);
+
 
 //Permite anadir un curso'
 api.post('/addCourse', CourseController.addCourse);
@@ -83,5 +86,12 @@ api.get('/getAllStudents', StudentController.getAllStudents);
 api.get('/getStudentProfilePicture/:idProfilePicture', StudentController.getStudentProfilePicture)
 
 api.get('/getPicture/:idPicture', PictureController.getPicture)
+
+
+
+
+//Google Auth
+api.post('/signUpGoogle', googleAuth, StudentController.signUpGoogle);
+api.post('/signInGoogle', googleAuth, StudentController.signInGoogle);
 
 module.exports = api;
