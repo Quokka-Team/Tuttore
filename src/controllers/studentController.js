@@ -77,6 +77,7 @@ async function getStudent(req, res){
         if(!student) return res.status(404).send({message: 'User does not exist'});
         
         res.status(200).send({
+            id: student._id,
             name:student.name,
             lastName: student.lastName,
             email:student.email,
