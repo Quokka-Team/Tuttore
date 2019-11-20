@@ -10,7 +10,6 @@ const fs = require('fs');
 
 //Registro
 async function signUp(req, res){
-    
     let existingStudent;
     try{
         existingStudent = await Student.findOne({email:req.body.email});
