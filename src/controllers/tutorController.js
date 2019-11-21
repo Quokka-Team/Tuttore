@@ -13,6 +13,7 @@ async function registerTutor(req, res){
 
     const addFields = {
         courses: [],
+        events: [], 
         description: req.body.description,
         price : req.body.price,
         isTutor: true,
@@ -106,7 +107,8 @@ async function getTutor(req, res){
         price: tutor.price,
         dateCreatedTutor: tutor.dateCreatedTutor,
         idProfilePicture: tutor.profilePicture,
-        courses:[]
+        courses:[],
+        events: []
     }
     
     // add try catch
@@ -119,6 +121,10 @@ async function getTutor(req, res){
             err: err
         });
     }
+
+    /* ADD LOGIC TO RETURN ALL EVENTS OF TUTOR */
+
+
     res.status(200).send(newTutor);
 
 }
@@ -281,4 +287,31 @@ async function getNewTutorsByCourse(req, res){
 
 
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse}
+
+async function addEventTutor(req, res){
+    const id_tutor = req.student;
+
+    const newEvent ={
+        title: req.body.title,
+        start: new Date(),
+        end: new Date()
+    }
+
+    Student.findOne({_id:id_tutor}, (err, student) =>{
+        
+        if (err) return res.status(500).send({message: 'Server Failed Getting Tutor', err:err});
+        if (!student.isTutor) return res.status(400).send({message: 'Student is not a tutor'});
+        student.events.push(newEvent);
+
+        Student.update({_id:id_tutor}, {events:student.events}, (err, result)=>{
+            if (err) return res.status(500).send({message: 'Server Failed Adding Tutor Event', err:err});
+            res.status(200).send({message: 'event added correctly'});
+        });
+
+    });
+
+}
+
+
+
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse, addEventTutor}

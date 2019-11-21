@@ -70,6 +70,9 @@ api.get('/getTutorsByCourse/:idCourse', TutorController.getTutorsByCourse);
 //Get new tutors
 api.get('/getNewTutors/:numberTutors', TutorController.getNewTutors);
 
+//Add new event to tutor
+api.post('/addEvent', auth, TutorController.addEventTutor);
+
 //Get new tutors bt course
 api.get('/getNewTutorsByCourse/:idCourse/:numberTutors', TutorController.getNewTutorsByCourse);
 
