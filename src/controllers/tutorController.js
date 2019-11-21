@@ -318,12 +318,24 @@ async function deleteEventTutor(req, res){
 
 
     Student.update({_id:id_tutor}, { $pull: { events: {_id:id_event} }}, (err, result) => {
-        if (err) return res.status(500).send({message: 'Server Failed Adding Tutor Event', err:err});
+        if (err) return res.status(500).send({message: 'Server Failed Deleting Tutor Event', err:err});
         res.status(200).send({message: 'event deleted correctly'});
     });
 }
 
+async function getEventsTutor(req, res){
+    const id_tutor = req.student;
+
+    Student.findOne({_id:id_tutor}, (err, student) =>{
+        if (err) return res.status(500).send({message: 'Server Failed Getting Tutor', err:err});
+        if (!student.isTutor) return res.status(400).send({message: 'Student is not a tutor'});
+        
+        res.status(200).send(student.events);
+    });
+
+} 
 
 
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse, addEventTutor, deleteEventTutor}
+
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse, addEventTutor, deleteEventTutor, getEventsTutor}
