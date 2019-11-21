@@ -293,8 +293,8 @@ async function addEventTutor(req, res){
 
     const newEvent ={
         title: req.body.title,
-        start: new Date(),
-        end: new Date()
+        start: req.body.start,
+        end: req.body.end
     }
 
     Student.findOne({_id:id_tutor}, (err, student) =>{
@@ -338,4 +338,14 @@ async function getEventsTutor(req, res){
 
 
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse, addEventTutor, deleteEventTutor, getEventsTutor}
+module.exports = { 
+    registerTutor, 
+    addCourseTutor, 
+    getTutor, 
+    getTutorsByCourse, 
+    getNewTutors, 
+    getNewTutorsByCourse, 
+    addEventTutor, 
+    deleteEventTutor, 
+    getEventsTutor
+}

@@ -26,10 +26,10 @@ const EventEmbeddedTutorSchema = new Schema({
         type: String
     },
     start:{
-        type: Date
+        type: String
     },
     end:{
-        type: Date
+        type: String
     }
   });
 
