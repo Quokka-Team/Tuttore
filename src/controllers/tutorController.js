@@ -321,7 +321,7 @@ async function deleteEventTutor(req, res){
 }
 
 async function getEventsTutor(req, res){
-    const id_tutor = req.student;
+    const id_tutor = req.params.idTutor;
 
     Student.findOne({_id:id_tutor}, (err, student) =>{
         if (err) return res.status(500).send({message: 'Server Failed Getting Tutor', err:err});
