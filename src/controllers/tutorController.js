@@ -312,6 +312,18 @@ async function addEventTutor(req, res){
 
 }
 
+async function deleteEventTutor(req, res){
+    const id_tutor = req.student;
+    const id_event = req.body.idEvent;
 
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse, addEventTutor}
+    Student.update({_id:id_tutor}, { $pull: { events: {_id:id_event} }}, (err, result) => {
+        if (err) return res.status(500).send({message: 'Server Failed Adding Tutor Event', err:err});
+        res.status(200).send({message: 'event deleted correctly'});
+    });
+}
+
+
+
+
+module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse, addEventTutor, deleteEventTutor}
