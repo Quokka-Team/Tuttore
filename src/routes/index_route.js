@@ -70,7 +70,16 @@ api.get('/getTutorsByCourse/:idCourse', TutorController.getTutorsByCourse);
 //Get new tutors
 api.get('/getNewTutors/:numberTutors', TutorController.getNewTutors);
 
-//Get new tutors bt course
+//Add new event to a tutor
+api.post('/addEventTutor', auth, TutorController.addEventTutor);
+
+//Delete an event of a tutor
+api.post('/deleteEventTutor', auth, TutorController.deleteEventTutor);
+
+//Get all events of a tutor
+api.get('/getEventsTutor/:idTutor', TutorController.getEventsTutor)
+
+//Get new tutors by course
 api.get('/getNewTutorsByCourse/:idCourse/:numberTutors', TutorController.getNewTutorsByCourse);
 
 //Envia codigo de verificacion

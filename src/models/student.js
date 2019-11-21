@@ -21,6 +21,19 @@ const CourseEmbeddedTutorSchema = new Schema({
   }
 });
 
+const EventEmbeddedTutorSchema = new Schema({
+    title: {
+        type: String
+    },
+    start:{
+        type: String
+    },
+    end:{
+        type: String
+    }
+  });
+
+
 const StudentSchema = new Schema({
     name: {
         type: String
@@ -44,6 +57,7 @@ const StudentSchema = new Schema({
         type: String
     },
     courses:[CourseEmbeddedTutorSchema],
+    events:[EventEmbeddedTutorSchema],
 
     profilePicture: {
         data: {
