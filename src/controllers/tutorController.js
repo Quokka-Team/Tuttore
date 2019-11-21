@@ -108,7 +108,7 @@ async function getTutor(req, res){
         dateCreatedTutor: tutor.dateCreatedTutor,
         idProfilePicture: tutor.profilePicture,
         courses:[],
-        events: []
+        events: tutor.events
     }
     
     // add try catch
@@ -121,9 +121,6 @@ async function getTutor(req, res){
             err: err
         });
     }
-
-    /* ADD LOGIC TO RETURN ALL EVENTS OF TUTOR */
-
 
     res.status(200).send(newTutor);
 
