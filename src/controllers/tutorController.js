@@ -107,8 +107,7 @@ async function getTutor(req, res){
         price: tutor.price,
         dateCreatedTutor: tutor.dateCreatedTutor,
         idProfilePicture: tutor.profilePicture,
-        courses:[],
-        events: tutor.events
+        courses:[]
     }
     
     // add try catch
@@ -121,6 +120,24 @@ async function getTutor(req, res){
             err: err
         });
     }
+
+    // Se cambia el nombre de llave '_id' a 'id' para facilitar trabajo en front
+    let events = [];
+        
+    tutor.events.forEach((e)=>{
+        events.push({
+            id: e._id,
+            title: e.title,
+            start: e.start,
+            color: e.color,
+            textColor: e.textColor,
+            overlap: e.overlap,
+            selectable: e.selectable 
+        });
+    });
+
+    newTutor.events = events;
+
 
     res.status(200).send(newTutor);
 
@@ -305,7 +322,6 @@ async function addEventTutor(req, res){
 
         Student.findOneAndUpdate({_id:id_tutor}, {events:student.events}, { new: true }, (err, result)=>{
             if (err) return res.status(500).send({message: 'Server Failed Adding Tutor Event', err:err});
-            console.log(result.events);
             res.status(200).send(result.events[result.events.length - 1]._id);
         });
 
@@ -351,8 +367,23 @@ async function getEventsTutor(req, res){
 
 } 
 
+async function updateEventTutor (req, res){
+    const id_event = req.body.idEvent;
 
+    const updatedEvent = {
+        'events.$.title': req.body.title,
+        'events.$.start': req.body.start,
+        'events.$.color': req.body.color,
+        'events.$.textColor': req.body.textColor,
+        'events.$.overlap': req.body.overlap,
+        'events.$.selectable': req.body.selectable
+    };
 
+    Student.updateOne({'events._id' : id_event}, { $set: updatedEvent}, (err, result) => {
+        if (err) return res.status(500).send({message: 'Server Failed Updating Event', err:err});
+        res.status(200).send({message: 'Event updated correctly'});
+    });
+}
 
 module.exports = { 
     registerTutor, 
@@ -363,5 +394,6 @@ module.exports = {
     getNewTutorsByCourse, 
     addEventTutor, 
     deleteEventTutor, 
-    getEventsTutor
+    getEventsTutor,
+    updateEventTutor
 }

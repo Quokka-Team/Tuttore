@@ -77,7 +77,9 @@ api.post('/addEventTutor', auth, TutorController.addEventTutor);
 api.post('/deleteEventTutor', auth, TutorController.deleteEventTutor);
 
 //Get all events of a tutor
-api.get('/getEventsTutor/:idTutor', TutorController.getEventsTutor)
+api.get('/getEventsTutor/:idTutor', TutorController.getEventsTutor);
+
+api.post('/updateEventTutor', TutorController.updateEventTutor);
 
 //Get new tutors by course
 api.get('/getNewTutorsByCourse/:idCourse/:numberTutors', TutorController.getNewTutorsByCourse);
