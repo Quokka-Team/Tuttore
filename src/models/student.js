@@ -28,7 +28,16 @@ const EventEmbeddedTutorSchema = new Schema({
     start:{
         type: String
     },
-    end:{
+    color:{
+        type: String
+    }, 
+    textColor:{
+        type: String
+    },
+    overlap:{
+        type: String
+    },
+    selectable:{
         type: String
     }
   });
