@@ -133,7 +133,7 @@ async function downlandPicture(idPicture){
             function(err, res){
                 res.data
                 .on('end', () => {
-                    resolve();
+                    resolve(res);
                 })
                 .on('error', err => {
                     reject();
@@ -142,8 +142,6 @@ async function downlandPicture(idPicture){
             }
         );
     });
-
-    await downlandFile(dest, idPicture);
 
     return;
 }
