@@ -142,7 +142,8 @@ async function downlandPicture(idPicture){
             }
         );
     });
-
+    await downlandFile(dest, idPicture);
+    
     return;
 }
 
