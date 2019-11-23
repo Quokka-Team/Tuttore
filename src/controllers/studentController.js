@@ -150,7 +150,7 @@ async function getStudent(req, res){
             gpa:student.gpa,
             phoneNumber: student.phoneNumber,
             isTutor: student.isTutor,
-            idProfilePicture: student.profilePicture,
+            profilePicture: student.profilePicture,
             googleUser: student.googleUser
         });
     });
