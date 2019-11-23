@@ -34,9 +34,9 @@ async function signUp(req, res){
             idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
         }
         catch(err){
-            return res.status(403).send({message: 'Failed Upload Profile Picure'});
+            return res.status(403).send({message: 'Failed Upload Profile Picture'});
         }
-        
+
         const student = new Student({
             name : req.body.name,
             lastName : req.body.lastName,
