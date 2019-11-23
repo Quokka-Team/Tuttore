@@ -106,7 +106,7 @@ async function getTutor(req, res){
         description: tutor.description,
         price: tutor.price,
         dateCreatedTutor: tutor.dateCreatedTutor,
-        idProfilePicture: tutor.profilePicture,
+        profilePicture: tutor.profilePicture,
         courses:[]
     }
     
@@ -214,7 +214,7 @@ async function getInformationTutors(getTutors){
             initialDate:getTutors[i].initialDate,
             gpa: getTutors[i].gpa,
             score: getTutors[i].score,
-            idProfilePicture: tutor.profilePicture
+            profilePicture: tutor.profilePicture
         });
     }
     return tutors;
@@ -284,7 +284,7 @@ async function getNewTutorsByCourse(req, res){
                 initialDate:idTutors[i].initialDate,
                 gpa: idTutors[i].gpa,
                 score: idTutors[i].score,
-                idProfilePicture: tutor.profilePicture
+                profilePicture: tutor.profilePicture
             });
         }
     }

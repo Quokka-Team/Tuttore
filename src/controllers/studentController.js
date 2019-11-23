@@ -24,11 +24,19 @@ async function signUp(req, res){
     } 
     else {
         
+        let profilePicture;
 
-        let profilePicture = req.files.profilePicture;
+        let idProfilePicture;
+        try{
 
-        let idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
-        
+            profilePicture = req.files.profilePicture;
+
+            idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
+        }
+        catch(err){
+            return res.status(403).send({message: 'Failed Upload Profile Picture'});
+        }
+
         const student = new Student({
             name : req.body.name,
             lastName : req.body.lastName,
@@ -150,7 +158,7 @@ async function getStudent(req, res){
             gpa:student.gpa,
             phoneNumber: student.phoneNumber,
             isTutor: student.isTutor,
-            idProfilePicture: student.profilePicture,
+            profilePicture: student.profilePicture,
             googleUser: student.googleUser
         });
     });

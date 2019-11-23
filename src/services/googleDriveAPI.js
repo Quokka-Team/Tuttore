@@ -20,7 +20,7 @@ async function uploadProfileImage(profilePicture, nameProfilePicture){
     await profilePicture.mv(`src/tmp/${nameProfilePicture}`, err=>{
         // if(err) return res.status(500).send({ message : 'No se ha podido cargar la imagen' })
         if(err){
-            return;            
+            throw "Failed Read Picture";            
         }
 
     });
@@ -133,7 +133,7 @@ async function downlandPicture(idPicture){
             function(err, res){
                 res.data
                 .on('end', () => {
-                    resolve();
+                    resolve(res);
                 })
                 .on('error', err => {
                     reject();
@@ -142,9 +142,8 @@ async function downlandPicture(idPicture){
             }
         );
     });
-
     await downlandFile(dest, idPicture);
-
+    
     return;
 }
 
