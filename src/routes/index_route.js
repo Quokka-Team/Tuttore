@@ -6,9 +6,9 @@ const emailNotificationController = require('../controllers/emailNotificationCon
 const CourseController = require('../controllers/courseController');
 const TutorController = require('../controllers/tutorController');
 const CareerController = require('../controllers/careerController');
-
+const PictureController = require('../controllers/pictureController');
 const auth = require('../middlewares/auth');
-
+const googleAuth = require('../middlewares/googleAuth');
 
 const api = express.Router();
 
@@ -32,6 +32,9 @@ api.get('/profile', auth, (req, res) => {
 api.get('/getStudent', auth, StudentController.getStudent);
 
 api.put('/updateStudent', auth, StudentController.updateStudent);
+
+api.get('/typeStudent/:email', StudentController.typeStudent);
+
 
 //Permite anadir un curso'
 api.post('/addCourse', CourseController.addCourse);
@@ -67,7 +70,18 @@ api.get('/getTutorsByCourse/:idCourse', TutorController.getTutorsByCourse);
 //Get new tutors
 api.get('/getNewTutors/:numberTutors', TutorController.getNewTutors);
 
-//Get new tutors bt course
+//Add new event to a tutor
+api.post('/addEventTutor', auth, TutorController.addEventTutor);
+
+//Delete an event of a tutor
+api.post('/deleteEventTutor', auth, TutorController.deleteEventTutor);
+
+//Get all events of a tutor
+api.get('/getEventsTutor/:idTutor', TutorController.getEventsTutor);
+
+api.post('/updateEventTutor', TutorController.updateEventTutor);
+
+//Get new tutors by course
 api.get('/getNewTutorsByCourse/:idCourse/:numberTutors', TutorController.getNewTutorsByCourse);
 
 //Envia codigo de verificacion
@@ -78,5 +92,17 @@ api.get('/verificationCode/:email', emailNotificationController.sendCodeVerifica
 api.get('/getAllStudents', StudentController.getAllStudents);
 
 
+
+//COmentar - Arreglar
+api.get('/getStudentProfilePicture/:idProfilePicture', StudentController.getStudentProfilePicture)
+
+api.get('/getPicture/:idPicture', PictureController.getPicture)
+
+
+
+
+//Google Auth
+api.post('/signUpGoogle', googleAuth, StudentController.signUpGoogle);
+api.post('/signInGoogle', googleAuth, StudentController.signInGoogle);
 
 module.exports = api;

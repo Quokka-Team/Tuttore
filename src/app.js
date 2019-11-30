@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const fileUpload = require('express-fileupload')
 
 const api = require('./routes/index_route');
 
@@ -22,6 +23,7 @@ app.use((req, res, next) => {
 //Sirve para acceder al cuerpo de las peticiones
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use(fileUpload());
 app.use('/', api);
 
 
