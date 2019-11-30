@@ -13,7 +13,9 @@ async function registerTutor(req, res){
 
     const addFields = {
         courses: [],
+        events: [], 
         description: req.body.description,
+        price : req.body.price,
         isTutor: true,
         dateCreatedTutor: new Date()
     };
@@ -94,6 +96,7 @@ async function getTutor(req, res){
     }
     
     let newTutor = {
+        idTutor: tutor._id,
         name: tutor.name,
         lastName: tutor.lastName,
         email: tutor.email,
@@ -101,7 +104,9 @@ async function getTutor(req, res){
         gpa: tutor.gpa, 
         phoneNumber: tutor.phoneNumber,
         description: tutor.description,
+        price: tutor.price,
         dateCreatedTutor: tutor.dateCreatedTutor,
+        profilePicture: tutor.profilePicture,
         courses:[]
     }
     
@@ -115,6 +120,25 @@ async function getTutor(req, res){
             err: err
         });
     }
+
+    // Se cambia el nombre de llave '_id' a 'id' para facilitar trabajo en front
+    let events = [];
+        
+    tutor.events.forEach((e)=>{
+        events.push({
+            id: e._id,
+            title: e.title,
+            start: e.start,
+            color: e.color,
+            textColor: e.textColor,
+            overlap: e.overlap,
+            selectable: e.selectable 
+        });
+    });
+
+    newTutor.events = events;
+
+
     res.status(200).send(newTutor);
 
 }
@@ -141,6 +165,7 @@ async function getInformationCourses(idCourses){
 
 
 async function getTutorsByCourse(req, res){
+
     let id_course = req.params.idCourse;
 
     let course;
@@ -154,6 +179,7 @@ async function getTutorsByCourse(req, res){
             err: err
         });
     }
+
     let getCourse = {
         idCourse:id_course,
         name:course.name,
@@ -184,9 +210,11 @@ async function getInformationTutors(getTutors){
             lastName: tutor.lastName,
             carrer: tutor.carrer,
             description: tutor.description,
+            price: tutor.price,
             initialDate:getTutors[i].initialDate,
             gpa: getTutors[i].gpa,
-            score: getTutors[i].score
+            score: getTutors[i].score,
+            profilePicture: tutor.profilePicture
         });
     }
     return tutors;
@@ -197,7 +225,7 @@ async function getInformationTutors(getTutors){
 async function getNewTutors(req, res){
     let numberTutors = parseInt(req.params.numberTutors);
     try{
-        let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(numberTutors).select('-password -availability -chat -__v -courses._id').exec();
+        let tutors = await Student.find({isTutor: true}).sort({dateCreatedTutor:'desc'}).limit(numberTutors).select('-password -availability -chat -__v -courses._id' ).exec();
         res.status(200).send(tutors);
     }
     catch(err){
@@ -252,9 +280,11 @@ async function getNewTutorsByCourse(req, res){
                 email: tutor.email,
                 carrer: tutor.carrer,
                 description: tutor.description,
+                price: tutor.price,
                 initialDate:idTutors[i].initialDate,
                 gpa: idTutors[i].gpa,
-                score: idTutors[i].score
+                score: idTutors[i].score,
+                profilePicture: tutor.profilePicture
             });
         }
     }
@@ -271,4 +301,99 @@ async function getNewTutorsByCourse(req, res){
 
 
 
-module.exports = { registerTutor, addCourseTutor, getTutor, getTutorsByCourse, getNewTutors, getNewTutorsByCourse}
+
+async function addEventTutor(req, res){
+    const id_tutor = req.student;
+
+    const newEvent ={
+        title: req.body.title,
+        start: req.body.start,
+        color: req.body.color,
+        textColor: req.body.textColor,
+        overlap: req.body.overlap,
+        selectable: req.body.selectable
+    };
+
+    Student.findOne({_id:id_tutor}, (err, student) =>{
+        
+        if (err) return res.status(500).send({message: 'Server Failed Getting Tutor', err:err});
+        if (!student.isTutor) return res.status(400).send({message: 'Student is not a tutor'});
+        student.events.push(newEvent);
+
+        Student.findOneAndUpdate({_id:id_tutor}, {events:student.events}, { new: true }, (err, result)=>{
+            if (err) return res.status(500).send({message: 'Server Failed Adding Tutor Event', err:err});
+            res.status(200).send(result.events[result.events.length - 1]._id);
+        });
+
+    });
+
+}
+
+async function deleteEventTutor(req, res){
+    const id_tutor = req.student;
+    const id_event = req.body.idEvent;
+
+
+    Student.update({_id:id_tutor}, { $pull: { events: {_id:id_event} }}, (err, result) => {
+        if (err) return res.status(500).send({message: 'Server Failed Deleting Tutor Event', err:err});
+        res.status(200).send({message: 'event deleted correctly'});
+    });
+}
+
+async function getEventsTutor(req, res){
+    const id_tutor = req.params.idTutor;
+
+    Student.findOne({_id:id_tutor}, (err, student) =>{
+        if (err) return res.status(500).send({message: 'Server Failed Getting Tutor', err:err});
+        if (!student.isTutor) return res.status(400).send({message: 'Student is not a tutor'});
+        
+        // Se cambia el nombre de llave '_id' a 'id' para facilitar trabajo en front
+        let events = [];
+        
+        student.events.forEach((e)=>{
+            events.push({
+                id: e._id,
+                title: e.title,
+                start: e.start,
+                color: e.color,
+                textColor: e.textColor,
+                overlap: e.overlap,
+                selectable: e.selectable 
+            });
+        });
+
+        res.status(200).send(events);
+    });
+
+} 
+
+async function updateEventTutor (req, res){
+    const id_event = req.body.idEvent;
+
+    const updatedEvent = {
+        'events.$.title': req.body.title,
+        'events.$.start': req.body.start,
+        'events.$.color': req.body.color,
+        'events.$.textColor': req.body.textColor,
+        'events.$.overlap': req.body.overlap,
+        'events.$.selectable': req.body.selectable
+    };
+
+    Student.updateOne({'events._id' : id_event}, { $set: updatedEvent}, (err, result) => {
+        if (err) return res.status(500).send({message: 'Server Failed Updating Event', err:err});
+        res.status(200).send({message: 'Event updated correctly'});
+    });
+}
+
+module.exports = { 
+    registerTutor, 
+    addCourseTutor, 
+    getTutor, 
+    getTutorsByCourse, 
+    getNewTutors, 
+    getNewTutorsByCourse, 
+    addEventTutor, 
+    deleteEventTutor, 
+    getEventsTutor,
+    updateEventTutor
+}

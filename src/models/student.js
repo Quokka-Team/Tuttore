@@ -21,6 +21,28 @@ const CourseEmbeddedTutorSchema = new Schema({
   }
 });
 
+const EventEmbeddedTutorSchema = new Schema({
+    title: {
+        type: String
+    },
+    start:{
+        type: String
+    },
+    color:{
+        type: String
+    }, 
+    textColor:{
+        type: String
+    },
+    overlap:{
+        type: String
+    },
+    selectable:{
+        type: String
+    }
+  });
+
+
 const StudentSchema = new Schema({
     name: {
         type: String
@@ -44,6 +66,7 @@ const StudentSchema = new Schema({
         type: String
     },
     courses:[CourseEmbeddedTutorSchema],
+    events:[EventEmbeddedTutorSchema],
 
     profilePicture: {
         data: {
@@ -55,6 +78,9 @@ const StudentSchema = new Schema({
     },
     description: {
         type: String
+    },
+    price: {
+        type: Number
     },
     isTutor : {
         type: Boolean
@@ -83,6 +109,12 @@ const StudentSchema = new Schema({
     }, 
     dateCreatedTutor:{
       type:Date
+    },
+    profilePicture:{
+        type:String
+    },
+    googleUser:{
+        type:Boolean
     }
 });
 
