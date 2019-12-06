@@ -19,6 +19,7 @@ async function addRequest(req, res){
         });
     }
 
+
     //Recuperando Datos del Estudiante
     let student;
     try{
@@ -30,6 +31,7 @@ async function addRequest(req, res){
             err: err
         });
     }
+
 
     //Recuperando Materia
     let course;
@@ -43,21 +45,33 @@ async function addRequest(req, res){
         });
     }
 
-    console.log(tutor);
-    console.log(student);
-    console.log(course);
+
+
+
+    //Creando session
+    const newEvent ={
+        title: `Tutoria - ${course.name}`,
+        start: req.body.dateStart,
+        color: '#096682',
+        textColor: 'White',
+        overlap: false,
+        selectable: true
+    };
+
+    const session = new Session({
+        tutor: req.body.idTutor,
+        student: req.body.idStudent,
+        course: req.body.idCourse,
+        date: newEvent, 
+        status: '0'
+    });
+
+    session.save((err)=>{
+        if (err) res.status(500).send({message: `Error add request`, err:err});
+            
+        return res.status(201).send({message: 'Requets add sucessfully'});
+    });
     
-    res.send('Washo');
-
-    // const newEvent ={
-    //     title: req.body.title,
-    //     start: req.body.start,
-    //     color: req.body.color,
-    //     textColor: req.body.textColor,
-    //     overlap: req.body.overlap,
-    //     selectable: req.body.selectable
-    // };
-
 }
 
 module.exports = { 
