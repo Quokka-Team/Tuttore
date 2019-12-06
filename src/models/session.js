@@ -26,33 +26,37 @@ const EventEmbeddedTutorSchema = new Schema({
 
 const SessionSchema = new Schema({
     tutor: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
     },
+
     student: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
     },
+
     course: {
-        type: Schema.Types.ObjectId,
-        required: true
+        type: Schema.Types.ObjectId
     },
+
     studentScore: {
         type: Number
     },
+
     studentComment: {
         type: String
     },
+
     date: EventEmbeddedTutorSchema,
+    
     tutorReport: {
         type: String
     },
+
     studentReport: {
         type: String
     },
+    
     status:{
-        type: String,
-        required: true
+        type: String
     }
 });
 
