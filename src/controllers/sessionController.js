@@ -133,7 +133,7 @@ async function scheduleVerification(dateStartReq, dateEndReq, idSession){
 
 
     //Programando la funcion de validadion
-    cron.schedule(`${dateStart.second} ${dateStart.minute} ${parseInt(dateStart.hour - 1)} ${dateStart.day} ${dateStart.month} *`, async () => {
+    cron.schedule(`${dateStart.second} ${dateStart.minute} ${parseInt(dateStart.hour)} ${dateStart.day} ${dateStart.month} *`, async () => {
 
         //Obtiene la session
         let session;
@@ -160,21 +160,6 @@ async function scheduleVerification(dateStartReq, dateEndReq, idSession){
             //Notificar al usuario que la solicitud no obtuvo respuesta
 
         }
-
-        //Aprovada
-        else if(session.status == '1'){
-            //Notificar por correo al usuario y tutor que tiene un tutoria
-
-
-            //Programar una notificacion que la tutoria ha terminado
-            //cron.schedule(`${dateEnd.second} ${dateEnd.minute} ${dateEnd.hour} ${dateEnd.day} ${dateEnd .month} *`, async () => {
-                
-                //Notificar al usuario que la tutoria ha finalizado....
-                
-            //});
-
-        }
-   
         //Otros casos
         else{
             //No hacer nada
@@ -327,7 +312,42 @@ async function acceptRequest(req, res){
 
 
 
+
+
+// Resolver solicitud
+async function rejectRequest(req, res){
+    let idSession = req.params.idSession;
+
+
+    //Obteniendo datos de la sesion
+    let session;
+    try{
+        session = await Session.findOne({_id:idSession});
+    }
+    catch(err){
+        res.status(500).send({message:'Error getting session', err:err})
+    }
+
+
+    //Verificando el estado de la solicitud
+    if(session.status != '0'){
+        res.status(500).send({message:'Error request invalide'});
+    }
+
+    //Cancelando solicitud
+    try{
+        await Session.updateOne({_id:idSession}, {status:'2'});
+    }
+    catch(err){
+        res.status(500).send({message: 'Error update session', err:err});
+    }
+
+    res.status(500).send({message: 'Request reject correctly'});
+}
+
+
 module.exports = { 
     addRequest,
-    acceptRequest
+    acceptRequest,
+    rejectRequest
 }

@@ -95,13 +95,14 @@ api.get('/verificationCode/:email', emailNotificationController.sendCodeVerifica
 
 //Tutorias
 
-//Registrar 
+//Registrar Solicitud
 api.post('/addRequest', SessionController.addRequest);
 
 //Aceptar Solicitud
 api.get('/acceptRequest/:idSession', SessionController.acceptRequest);
 
-
+//Rechazar Solicitud
+api.get('/rejectRequest/:idSession', SessionController.rejectRequest);
 
 
 
