@@ -98,6 +98,8 @@ api.get('/verificationCode/:email', emailNotificationController.sendCodeVerifica
 //Registrar 
 api.post('/addRequest', SessionController.addRequest);
 
+//Aceptar Solicitud
+api.get('/acceptRequest/:idSession', SessionController.acceptRequest);
 
 
 

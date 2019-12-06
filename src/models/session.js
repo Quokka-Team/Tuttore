@@ -10,6 +10,9 @@ const EventEmbeddedTutorSchema = new Schema({
     start:{
         type: String
     },
+    end:{
+        type: String
+    },
     color:{
         type: String
     }, 
@@ -45,7 +48,7 @@ const SessionSchema = new Schema({
         type: String
     },
 
-    date: EventEmbeddedTutorSchema,
+    event: EventEmbeddedTutorSchema,
     
     tutorReport: {
         type: String
@@ -54,7 +57,7 @@ const SessionSchema = new Schema({
     studentReport: {
         type: String
     },
-    
+
     status:{
         type: String
     }
