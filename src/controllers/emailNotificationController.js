@@ -50,4 +50,9 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-module.exports ={sendCodeVerification}
+
+async function notifyRequest(){
+    return 'hey washo'
+}
+
+module.exports ={sendCodeVerification, notifyRequest}
