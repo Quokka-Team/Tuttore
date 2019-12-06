@@ -7,6 +7,8 @@ const CourseController = require('../controllers/courseController');
 const TutorController = require('../controllers/tutorController');
 const CareerController = require('../controllers/careerController');
 const PictureController = require('../controllers/pictureController');
+const SessionController = require('../controllers/sessionController');
+
 const auth = require('../middlewares/auth');
 const googleAuth = require('../middlewares/googleAuth');
 
@@ -86,6 +88,19 @@ api.get('/getNewTutorsByCourse/:idCourse/:numberTutors', TutorController.getNewT
 
 //Envia codigo de verificacion
 api.get('/verificationCode/:email', emailNotificationController.sendCodeVerification);
+
+
+
+
+
+//Tutorias
+
+//Registrar 
+api.post('/addRequest', SessionController.addRequest);
+
+
+
+
 
 
 //Provisional

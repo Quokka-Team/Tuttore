@@ -43,6 +43,10 @@ async function addRequest(req, res){
         });
     }
 
+    console.log(tutor);
+    console.log(student);
+    console.log(course);
+    
     res.send('Washo');
 
     // const newEvent ={
