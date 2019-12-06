@@ -3,6 +3,27 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
+const EventEmbeddedTutorSchema = new Schema({
+    title: {
+        type: String
+    },
+    start:{
+        type: String
+    },
+    color:{
+        type: String
+    }, 
+    textColor:{
+        type: String
+    },
+    overlap:{
+        type: String
+    },
+    selectable:{
+        type: String
+    }
+  });
+
 const SessionSchema = new Schema({
     tutor: {
         type: Schema.Types.ObjectId,
@@ -17,27 +38,25 @@ const SessionSchema = new Schema({
         required: true
     },
     studentScore: {
-        type: Number,
-        required: true
+        type: Number
     },
     studentComment: {
-        type: String,
-        required: true
+        type: String
     },
-    date: {
-        type: Date,
-        required: true
-    },
+    date: EventEmbeddedTutorSchema,
     tutorReport: {
-        type: String,
-        required: true
+        type: String
     },
     studentReport: {
+        type: String
+    },
+    status:{
         type: String,
         required: true
     }
 });
 
+module.exports = mongoose.model('Session', SessionSchema);
 
 
 
