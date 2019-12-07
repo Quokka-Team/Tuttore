@@ -12,4 +12,9 @@ AWS.config.update({region: 'us-east-1'});
 
 //Automaticamente se caragaran todas las credenciales
 
+
+//Local
+
+
+
 module.exports = AWS
