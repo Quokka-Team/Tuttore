@@ -515,6 +515,37 @@ async function updateEventTutor (req, res){
 
 
 
+async function updateTutor(req, res){    
+    let id_tutor = req.body.idTutor;
+
+    let update_tutor = {
+        name : req.body.name,
+        lastName : req.body.lastName,
+        career: req.body.career,
+        gpa:req.body.gpa,
+        phoneNumber: req.body.phoneNumber,
+        description: req.body.description,
+        price : req.body.price
+    };
+
+    console.log(update_tutor);
+
+    await Student.updateOne({ _id: id_tutor }, update_tutor)
+    .exec(function (err, student){
+        if (err) {
+            return res.status(500).send({
+                message: 'Server Failed updating tutor',
+                err: err
+            });
+        }
+
+        res.status(200).send({
+            message : 'Tutor updated succesfully'
+        });
+    });
+}
+
+
 
 module.exports = { 
     registerTutor, 
@@ -526,5 +557,6 @@ module.exports = {
     addEventTutor, 
     deleteEventTutor, 
     getEventsTutor,
-    updateEventTutor
+    updateEventTutor,
+    updateTutor
 }
