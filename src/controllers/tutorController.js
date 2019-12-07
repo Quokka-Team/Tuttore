@@ -3,7 +3,7 @@
 const Student = require('../models/student');
 const service = require('../services/index_services');
 const Course = require('../models/course');
-
+const GoogleDriveAPI = require('../services/googleDriveAPI');
 
 
 
@@ -385,6 +385,61 @@ async function updateEventTutor (req, res){
     });
 }
 
+
+async function updateTutor(req, res){
+    // Luego arreglar esto
+    let id_tutor = req.student;
+    
+    // Se puso para probar con el formulario html. No necesario
+    // let id_tutor = req.body.idStudent;
+
+
+    let profilePicture;
+
+    let idProfilePicture;
+    
+
+    try{
+
+        profilePicture = req.files.profilePicture;
+
+        idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
+    }
+    catch(err){
+        return res.status(403).send({message: 'Failed Upload Profile Picture' + err});
+    }
+    
+    console.log(idProfilePicture);
+
+    let update_tutor = {
+        name : req.body.name,
+        lastName : req.body.lastName,
+        email: req.body.email,
+        career: req.body.career,
+        gpa:req.body.gpa,
+        phoneNumber: req.body.phoneNumber,
+        description: req.body.description,
+        price : req.body.price,
+        profilePicture:`https://tuttore.tk/getPicture/${idProfilePicture}`
+    };
+
+    console.log(update_tutor);
+
+    await Student.updateOne({ _id: id_tutor }, update_tutor)
+    .exec(function (err, student){
+        if (err) {
+            return res.status(500).send({
+                message: 'Server Failed updating tutor',
+                err: err
+            });
+        }
+
+        res.status(200).send({
+            message : 'Tutor updated succesfully'
+        });
+    });
+}
+
 module.exports = { 
     registerTutor, 
     addCourseTutor, 
@@ -395,5 +450,6 @@ module.exports = {
     addEventTutor, 
     deleteEventTutor, 
     getEventsTutor,
-    updateEventTutor
+    updateEventTutor,
+    updateTutor
 }

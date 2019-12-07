@@ -31,7 +31,11 @@ api.get('/profile', auth, (req, res) => {
 //Obitene los datos del estudiante, se requiere autentificacion
 api.get('/getStudent', auth, StudentController.getStudent);
 
-api.put('/updateStudent', auth, StudentController.updateStudent);
+// Actualiza los campos basicos y la imagen de un estudiante
+api.post('/updateStudent', auth, StudentController.updateStudent);
+
+// Actualiza los campos basicos y la imagen de un tutor
+api.post('/updateTutor',  auth, TutorController.updateTutor);
 
 api.get('/typeStudent/:email', StudentController.typeStudent);
 
