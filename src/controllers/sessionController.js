@@ -13,6 +13,9 @@ const EmailNotificationController = require('../controllers/emailNotificationCon
 
 
 
+
+
+
 //Añadir una solicitud del usuario
 async function addRequest(req, res){
     
@@ -99,12 +102,21 @@ async function addRequest(req, res){
 
     //Notificar por correo al tutor de la solicitud
     console.log('Se añadio una solicitud');
-    await EmailNotificationController.notifySession(tutor.email, 0);
+    await EmailNotificationController.notifySession(idSession, 0);
+
 
     //Respondo solicitud
     res.status(201).send({message: 'Request add correctly'});
 
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -172,21 +184,47 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
 
         //Aceptaron la solicitud
         if(session.status == '1'){
-            //Cambiar estado -> 4) tutoria sin seguimiento
+            //Cambiar estado -> 4) tutoria en proceso
             try{
                 await Session.update({_id:idSession}, {status:'4'});
             }
             catch(err){
                 throw "error update session";
             }
+
+
             //Notificar al estudiante y tutor que tiene una tutoria
             console.log('En este momento comienza una tutoria');
 
+
+
             //Programar notificacion del fin de la solicitud
             cron.schedule(`${dateEnd.second} ${dateEnd.minute} ${parseInt(dateEnd.hour)} ${dateEnd.day} ${dateEnd.month} *`, async () => {
-                //Notificar que se termino la tutoria a menos que existan reportes
-                console.log('se termino la tutoria');
+                //Obtiene la session
+                let session_end;
 
+                try{
+                    session_end = await Session.findOne({_id:idSession});
+                }
+                catch(err){
+                    throw "error getting session";
+                }
+                
+
+                if(session_end.status == '4'){
+                    //Actualizar Status la tutoria se termino
+                    
+                    try{
+                        await Session.update({_id:idSession}, {status:'5'});
+                    }
+                    catch(err){
+                        throw "error update session";
+                    }
+
+                    //Notificar que se termino la tutoria a menos que existan reportes
+                    console.log('se termino la tutoria');
+
+                }
             });
         }
 
@@ -204,6 +242,11 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
     return;
 
 }
+
+
+
+
+
 
 
 
@@ -246,6 +289,12 @@ async function rejectRequest(req, res){
     //Responder solicitud
     res.status(500).send({message: 'Request reject correctly'});
 }
+
+
+
+
+
+
 
 
 
@@ -385,6 +434,12 @@ async function acceptRequest(req, res){
 
 
 
+
+
+
+
+
+
 //obtener todas la solicitudes student
 async function getSessionsStudent(req, res){
     let idStudent = req.params.idStudent;
@@ -417,6 +472,19 @@ async function getSessionsStudent(req, res){
 
     res.send(sesiones_res);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //obtener todas la solicitudes tutor

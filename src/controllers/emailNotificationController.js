@@ -4,6 +4,9 @@ const AWS = require('../services/aws');
 
 const createTemplateProvisional = require('../templates/templateSendEmailProvisional'); 
 
+const Session = require('../models/session');
+const Student = require('../models/student');
+
 
 
 async function sendCodeVerification(req, res){
@@ -54,10 +57,44 @@ function getRandomInt(min, max) {
 
 
 
-async function notifySession(email, type){
+async function notifySession(idSession, type){
+    
+    //Obteniendo session
+    let session;
+
+    try{
+        session = await Session.findOne({_id:idSession});
+    }
+    catch(err){
+        throw 'Error getting session';
+        return;
+    }
+
+    //Obteniendo tutor
+    let tutor;
+    try{
+        tutor = await Student.findOne({_id:session.tutor});
+    }
+    catch(err){
+        throw 'Error getting tutor';
+    }
+
+
+    //Obteniendo Student
+    let student;
+    try{
+        student = await Student.findOne({_id:session.student});
+    }
+    catch(err){
+        throw 'Error getting student';
+    }
+    
+
+
+
     if(type == 0){
         var params = {
-            Destination: { CcAddresses: [email], ToAddresses: [email] },
+            Destination: { CcAddresses: [tutor.email], ToAddresses: [tutor.email] },
             Message: { 
                 Body: { 
                     Html: { Charset: "UTF-8", Data: "<h1>Tienes una solicitud</h1>"},
