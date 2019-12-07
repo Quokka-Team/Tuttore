@@ -99,6 +99,7 @@ async function addRequest(req, res){
 
     //Notificar por correo al tutor de la solicitud
     console.log('Se añadio una solicitud');
+    await EmailNotificationController.notifySession(tutor.email, 0);
 
     //Respondo solicitud
     res.status(201).send({message: 'Request add correctly'});

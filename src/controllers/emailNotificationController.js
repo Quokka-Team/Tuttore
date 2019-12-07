@@ -51,8 +51,39 @@ function getRandomInt(min, max) {
 }
 
 
-async function notifyRequest(){
-    return 'hey washo'
+
+
+
+async function notifySession(email, type){
+    if(type == 0){
+        var params = {
+            Destination: { CcAddresses: [email], ToAddresses: [email] },
+            Message: { 
+                Body: { 
+                    Html: { Charset: "UTF-8", Data: "<h1>Tienes una solicitud</h1>"},
+                    Text: { Charset: "UTF-8", Data: "TEXT_FORMAT_BODY" }
+                },
+                Subject: { Charset: 'UTF-8', Data: 'Surprise - AWS Init' }
+            },
+            Source: 'QuokkaTeam2019@gmail.com', 
+            ReplyToAddresses: [ 'QuokkaTeam2019@gmail.com' ],
+        }
+
+         // Create the promise and SES service object
+        var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
+        
+        // Handle promise's fulfilled/rejected states
+        sendPromise.then(
+            function(data) {
+                console.log(data.MessageId);
+                return;
+            }).catch(
+            function(err) {
+                console.error(err, err.stack);
+                return;
+        });
+    }
+
 }
 
-module.exports ={sendCodeVerification, notifyRequest}
+module.exports ={sendCodeVerification, notifySession}
