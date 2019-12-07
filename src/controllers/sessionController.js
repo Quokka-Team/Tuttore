@@ -11,6 +11,8 @@ const EmailNotificationController = require('../controllers/emailNotificationCon
 
 
 
+
+
 //Añadir una solicitud del usuario
 async function addRequest(req, res){
     
@@ -87,7 +89,7 @@ async function addRequest(req, res){
 
     //Programar verificacion del estado
     try{
-        await scheduleVerification(req.body.dateStart, req.body.dateEnd, idSession);
+        await scheduleVerificationRequest(req.body.dateStart, req.body.dateEnd, idSession);
     }
     catch(err){
         res.status(500).send({message:'Error schedule verification', err:err});
@@ -96,7 +98,7 @@ async function addRequest(req, res){
 
 
     //Notificar por correo al tutor de la solicitud
-
+    console.log('Se añadio una solicitud');
 
     //Respondo solicitud
     res.status(201).send({message: 'Request add correctly'});
@@ -109,27 +111,41 @@ async function addRequest(req, res){
 
 
 
+
+
+
+
+
+
+
+
+
 //Programar la verificacion
-async function scheduleVerification(dateStartReq, dateEndReq, idSession){
-
+async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
+    
     //Definiendo las fechas
+    let dateStartAux = new Date(dateStartReq);
+
     let dateStart = {
-        year:dateStartReq.substring(0,4),
-        month:dateStartReq.substring(5,7),
-        day:dateStartReq.substring(8,10),
-        hour:String(parseInt(dateStartReq.substring(11,13)) - 5),
-        minute:dateStartReq.substring(14,16),
-        second:dateStartReq.substring(17,19)
+        year:dateStartAux.getFullYear(),
+        month:parseInt(dateStartAux.getMonth()) + 1,
+        day:dateStartAux.getDate(),
+        hour:dateStartAux.getHours(),
+        minute:dateStartAux.getMinutes(),
+        second:dateStartAux.getSeconds()
     }
 
+    let dateEndAux = new Date(dateEndReq);
     let dateEnd = {
-        year:dateEndReq.substring(0,4),
-        month:dateEndReq.substring(5,7),
-        day:dateEndReq.substring(8,10),
-        hour:String(parseInt(dateEndReq.substring(11,13)) - 5),
-        minute:dateEndReq.substring(14,16),
-        second:dateEndReq.substring(17,19)
+        year:dateEndAux.getFullYear(),
+        month:parseInt(dateEndAux.getMonth()) + 1,
+        day:dateEndAux.getDate(),
+        hour:dateEndAux.getHours(),
+        minute:dateEndAux.getMinutes(),
+        second:dateEndAux.getSeconds()
     }
+
+    
 
 
     //Programando la funcion de validadion
@@ -158,8 +174,31 @@ async function scheduleVerification(dateStartReq, dateEndReq, idSession){
             }
 
             //Notificar al usuario que la solicitud no obtuvo respuesta
+            console.log('Una solicitud no tuvo respuesta');
 
         }
+
+        //Aceptaron la solicitud
+        if(session.status == '1'){
+            //Cambiar estado -> 4) tutoria sin seguimiento
+            try{
+                await Session.update({_id:idSession}, {status:'4'});
+            }
+            catch(err){
+                throw "error update session";
+            }
+            //Notificar al estudiante y tutor que tiene una tutoria
+            console.log('En este momento comienza una tutoria');
+
+            //Programar notificacion del fin de la solicitud
+            cron.schedule(`${dateEnd.second} ${dateEnd.minute} ${parseInt(dateEnd.hour)} ${dateEnd.day} ${dateEnd.month} *`, async () => {
+                //Notificar que se termino la tutoria a menos que existan reportes
+                console.log('se termino la tutoria');
+
+            });
+        }
+
+
         //Otros casos
         else{
             //No hacer nada
@@ -173,6 +212,60 @@ async function scheduleVerification(dateStartReq, dateEndReq, idSession){
     return;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Resolver solicitud
+async function rejectRequest(req, res){
+    let idSession = req.params.idSession;
+
+
+    //Obteniendo datos de la sesion
+    let session;
+    try{
+        session = await Session.findOne({_id:idSession});
+    }
+    catch(err){
+        res.status(500).send({message:'Error getting session', err:err})
+    }
+
+
+    //Verificando el estado de la solicitud
+    if(session.status != '0'){
+        res.status(500).send({message:'Error request invalide'});
+    }
+
+    //Cancelando solicitud
+    try{
+        await Session.updateOne({_id:idSession}, {status:'2'});
+    }
+    catch(err){
+        res.status(500).send({message: 'Error update session', err:err});
+    }
+
+    //Notificar que rechazaron la Solicitud
+    console.log('rechazaron la solicitud');
+
+
+    //Responder solicitud
+    res.status(500).send({message: 'Request reject correctly'});
+}
+
 
 
 
@@ -258,6 +351,9 @@ async function acceptRequest(req, res){
     idSessions_interception.forEach( async (id) =>{
         try{
             await Session.updateOne({_id:id}, {status:'2'});
+            
+            //Notificar que cancelaron la solicitud
+            console.log('Cancelaron la solicitud');
         }
         catch(err){
             res.status(500).send({message: 'Error update session', err:err});
@@ -275,7 +371,6 @@ async function acceptRequest(req, res){
 
 
     //Añadiendo el evento
-
     let tutor;
     try{
         tutor = await Student.findOne({_id:session.tutor}).exec();
@@ -304,6 +399,8 @@ async function acceptRequest(req, res){
     }
     
 
+    //Nofiticar que aceptaron la solicitud
+    console.log('Aceptaron una solicitud');
 
     //Responiendo la solicitud
     res.status(500).send({message: 'Request accept correctly', IdSessionRejects:idSessions_interception});
@@ -314,36 +411,30 @@ async function acceptRequest(req, res){
 
 
 
-// Resolver solicitud
-async function rejectRequest(req, res){
-    let idSession = req.params.idSession;
 
 
-    //Obteniendo datos de la sesion
-    let session;
+
+//obtener todas la solicitudes student
+async function getRequestsStudent(req, res){
+    let idStudent = req.params.idStudent;
+
+    //obteniendo session
+    let sesiones;
+
     try{
-        session = await Session.findOne({_id:idSession});
+        sesiones = await Session.find({});
     }
-    catch(err){
-        res.status(500).send({message:'Error getting session', err:err})
-    }
+    catch(err){}
 
-
-    //Verificando el estado de la solicitud
-    if(session.status != '0'){
-        res.status(500).send({message:'Error request invalide'});
-    }
-
-    //Cancelando solicitud
-    try{
-        await Session.updateOne({_id:idSession}, {status:'2'});
-    }
-    catch(err){
-        res.status(500).send({message: 'Error update session', err:err});
-    }
-
-    res.status(500).send({message: 'Request reject correctly'});
 }
+
+
+
+
+
+
+
+
 
 
 module.exports = { 
