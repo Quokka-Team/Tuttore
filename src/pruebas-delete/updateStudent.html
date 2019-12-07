@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action='http://localhost:3000/updateStudent/' method="POST" enctype="multipart/form-data">
+        <label>idStudent:<input type="text" name="idStudent"></label>
+        <br/>
+        <br/>
+        <label>name<input type="text" name="name"></label>
+        <br/>
+        <br/>
+        <label>lastname:<input type="text" name="lastName"></label>
+        <br/>
+        <br/>
+        <label>email:<input type="email" name="email"></label>
+        <br/> 
+        <br/>
+        <label>career:<input type="text" name="career"></label>
+        <br/>
+        <br/>
+        <label>gpa:<input type="text" name="gpa"></label>
+        <br/>
+        <br/>
+        <label>phoneNumber:<input type="text" name="phoneNumber"></label>
+        <br/>
+        <br/>
+        <input type="file" name="profilePicture">
+        <br/>
+        <br/>
+        
+
+        <input type="submit" value="Subir">
+    </form>
+</body>
+</html>

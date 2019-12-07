@@ -191,7 +191,27 @@ async function getAllStudents(req, res){
 
 
 async function updateStudent(req, res){
+    // Luego arreglar esto
     let id_student = req.student;
+
+    // Se puso para probar con el formulario html. No necesario
+    // let id_student = req.body.idStudent;
+    let profilePicture;
+
+    let idProfilePicture;
+    
+
+    try{
+
+        profilePicture = req.files.profilePicture;
+
+        idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
+    }
+    catch(err){
+        return res.status(403).send({message: 'Failed Upload Profile Picture'});
+    }
+    
+    console.log(idProfilePicture);
 
     updateStudent = {
         name : req.body.name,
@@ -199,7 +219,8 @@ async function updateStudent(req, res){
         email: req.body.email,
         career: req.body.career,
         gpa:req.body.gpa,
-        phoneNumber: req.body.phoneNumber
+        phoneNumber: req.body.phoneNumber,
+        profilePicture:`https://tuttore.tk/getPicture/${idProfilePicture}`
     };
 
     await Student.updateOne({ _id: id_student }, updateStudent)
