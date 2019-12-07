@@ -111,15 +111,6 @@ async function addRequest(req, res){
 
 
 
-
-
-
-
-
-
-
-
-
 //Programar la verificacion
 async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
     
@@ -219,17 +210,6 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // Resolver solicitud
 async function rejectRequest(req, res){
     let idSession = req.params.idSession;
@@ -265,16 +245,6 @@ async function rejectRequest(req, res){
     //Responder solicitud
     res.status(500).send({message: 'Request reject correctly'});
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -415,19 +385,71 @@ async function acceptRequest(req, res){
 
 
 //obtener todas la solicitudes student
-async function getRequestsStudent(req, res){
+async function getSessionsStudent(req, res){
     let idStudent = req.params.idStudent;
 
     //obteniendo session
     let sesiones;
 
     try{
-        sesiones = await Session.find({});
+        sesiones = await Session.find({student:idStudent});
     }
-    catch(err){}
+    catch(err){
+        res.status(500).send({message:'Error getting sessions'});
+    }
 
+
+    let i=0;
+    let sesiones_res=[];
+    while(sesiones[i]){
+        let sessionAux = {
+            id: sesiones[i]._id,
+            idTutor: sesiones[i].tutor,
+            idStudent: sesiones[i].student,
+            idCourse: sesiones[i].course,
+            status: sesiones[i].status,
+            event:sesiones[i].event
+        }
+        sesiones_res.push(sessionAux);
+        i=i+1;
+    }
+
+    res.send(sesiones_res);
 }
 
+
+//obtener todas la solicitudes tutor
+async function getSessionsTutor(req, res){
+    let idTutor = req.params.idTutor;
+
+    //obteniendo session
+    let sesiones;
+
+    try{
+        sesiones = await Session.find({tutor:idTutor});
+    }
+    catch(err){
+        res.status(500).send({message:'Error getting sessions'});
+    }
+
+
+    let i=0;
+    let sesiones_res=[];
+    while(sesiones[i]){
+        let sessionAux = {
+            id: sesiones[i]._id,
+            idTutor: sesiones[i].tutor,
+            idStudent: sesiones[i].student,
+            idCourse: sesiones[i].course,
+            status: sesiones[i].status,
+            event:sesiones[i].event
+        }
+        sesiones_res.push(sessionAux);
+        i=i+1;
+    }
+
+    res.send(sesiones_res);
+}
 
 
 
@@ -440,5 +462,7 @@ async function getRequestsStudent(req, res){
 module.exports = { 
     addRequest,
     acceptRequest,
-    rejectRequest
+    rejectRequest,
+    getSessionsStudent,
+    getSessionsTutor
 }

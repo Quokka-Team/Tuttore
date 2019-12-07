@@ -104,6 +104,11 @@ api.get('/acceptRequest/:idSession', SessionController.acceptRequest);
 //Rechazar Solicitud
 api.get('/rejectRequest/:idSession', SessionController.rejectRequest);
 
+//Obtener todas las sessiones student
+api.get('/getSessionsStudent/:idStudent', SessionController.getSessionsStudent);
+
+//Obtener todas las sessiones tutor
+api.get('/getSessionsTutor/:idTutor', SessionController.getSessionsTutor);
 
 
 //Provisional
