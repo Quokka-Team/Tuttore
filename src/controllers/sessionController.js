@@ -476,6 +476,9 @@ async function getSessionsStudent(req, res){
 
 
 
+
+
+
 //obtener todas la sesiones sin feedback de un estudiante
 async function getNofeedbackSessionsStudent(req, res){
     let idStudent = req.params.idStudent;
@@ -511,6 +514,100 @@ async function getNofeedbackSessionsStudent(req, res){
             tutorLastName: sessionTutor.lastName,
             status: sesiones[i].status,
             event:sesiones[i].event
+        }
+        sesiones_res.push(sessionAux);
+        i=i+1;
+    }
+
+    res.send(sesiones_res);
+}
+
+
+
+
+
+
+// Comentar una sesion de un tutor con status 5.
+async function commentSession(req, res){
+    let idSession = req.body.idSession;
+
+    //obteniendo session
+    let session;
+
+    try{
+        session = await Session.findOne({_id:idSession});
+    }
+    catch(err){
+        return res.status(500).send({message:'Error getting session'});
+    }
+
+    if (session.status != '5'){
+        return res.status(400).send({message:'Error: Session doesnt have status=5 (No feedback session)'});
+    }
+
+
+    let update_session = {
+        status : '6',
+        studentComment : req.body.studentComment,
+        studentScore : req.body.studentScore, 
+    };
+
+    await Session.updateOne({ _id: idSession }, update_session)
+    .exec(function (err, session){
+        if (err) {
+            return res.status(500).send({
+                message: 'Server Failed updating session',
+                err: err
+            });
+        }
+
+        res.status(200).send({
+            message : 'session commented succesfully'
+        });
+    });
+}
+
+
+
+
+//obtener todos los comentarios de un tutor
+async function getCommentsTutor(req, res){
+    let idTutor = req.params.idTutor;
+
+    //obteniendo session
+    let sesiones;
+
+    try{
+        sesiones = await Session.find({tutor:idTutor, status:'6'});
+    }
+    catch(err){
+        res.status(500).send({message:'Error getting sessions'});
+    }
+
+    let i=0;
+    let sesiones_res=[];
+    while(sesiones[i]){
+
+        
+        let sessionStudent;
+
+        try{
+            sessionStudent = await Student.findOne({_id: sesiones[i].student});
+        }
+        catch(err){
+            return res.status(500).send({message:'Error getting tutor'});
+        }
+
+        let sessionAux = {
+            id: sesiones[i]._id,
+            idTutor: sesiones[i].tutor,
+            idStudent: sesiones[i].student,
+            idCourse: sesiones[i].course,
+            studentScore: sesiones[i].studentScore,
+            studentComment: sesiones[i].studentComment,
+            studentName: sessionStudent.name,
+            studentLastName: sessionStudent.lastName,
+            profilePicture: sessionStudent.profilePicture,
         }
         sesiones_res.push(sessionAux);
         i=i+1;
@@ -575,5 +672,7 @@ module.exports = {
     rejectRequest,
     getSessionsStudent,
     getSessionsTutor,
-    getNofeedbackSessionsStudent
+    getNofeedbackSessionsStudent,
+    getCommentsTutor,
+    commentSession
 }

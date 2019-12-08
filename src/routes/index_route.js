@@ -121,6 +121,12 @@ api.get('/getSessionsTutor/:idTutor', SessionController.getSessionsTutor);
 // Obtener todas las sesiones de un estudiante sin feedback, con status=5. 
 api.get('/getNofeedbackSessionsStudent/:idStudent', SessionController.getNofeedbackSessionsStudent);
 
+// Obtener todos los comentarios de las sesiones de un tutor, con status=6. 
+api.get('/getCommentsTutor/:idTutor', SessionController.getCommentsTutor);
+
+// Comentar una sesion sin feedback de un tutor .
+api.post('/commentSession', SessionController.commentSession);
+
 
 //Provisional
 api.get('/getAllStudents', StudentController.getAllStudents);
