@@ -476,7 +476,48 @@ async function getSessionsStudent(req, res){
 
 
 
+//obtener todas la sesiones sin feedback de un estudiante
+async function getNofeedbackSessionsStudent(req, res){
+    let idStudent = req.params.idStudent;
 
+    //obteniendo session
+    let sesiones;
+
+    try{
+        sesiones = await Session.find({student:idStudent, status:'5'});
+    }
+    catch(err){
+        res.status(500).send({message:'Error getting sessions'});
+    }
+
+    let i=0;
+    let sesiones_res=[];
+    while(sesiones[i]){
+        let sessionTutor;
+
+        try{
+            sessionTutor = await Student.findOne({_id:sesiones[i].tutor});
+        }
+        catch(err){
+            return res.status(500).send({message:'Error getting tutor'});
+        }
+
+        let sessionAux = {
+            id: sesiones[i]._id,
+            idTutor: sesiones[i].tutor,
+            idStudent: sesiones[i].student,
+            idCourse: sesiones[i].course,
+            tutorName: sessionTutor.name,
+            tutorLastName: sessionTutor.lastName,
+            status: sesiones[i].status,
+            event:sesiones[i].event
+        }
+        sesiones_res.push(sessionAux);
+        i=i+1;
+    }
+
+    res.send(sesiones_res);
+}
 
 
 
@@ -533,5 +574,6 @@ module.exports = {
     acceptRequest,
     rejectRequest,
     getSessionsStudent,
-    getSessionsTutor
+    getSessionsTutor,
+    getNofeedbackSessionsStudent
 }
