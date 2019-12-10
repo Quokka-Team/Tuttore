@@ -12,7 +12,6 @@ AWS.config.update({region: 'us-east-1'});
 // });
 
 
-
 //Cargando las credenciales de manera local OJO -> esto no sirve para deplyment.
 
 //Como Hacerlo
