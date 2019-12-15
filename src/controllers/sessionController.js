@@ -235,8 +235,7 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
         }
     }, 
     {
-        scheduled: true,
-        timezone: "America/Bogota"
+        scheduled: true
     });
 
     return;
