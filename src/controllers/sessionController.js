@@ -102,7 +102,11 @@ async function addRequest(req, res){
 
     //Notificar por correo al tutor de la solicitud
     console.log('Se añadio una solicitud');
-    await EmailNotificationController.notifySession(idSession, 0);
+
+    // Para el tutor
+    // Tienes una solicitud de (Estudiante) para una tutoria en la materia (materia)
+
+    // await EmailNotificationController.notifySession(idSession, 0);
 
 
     //Respondo solicitud
@@ -180,6 +184,9 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
             //Notificar al usuario que la solicitud no obtuvo respuesta
             console.log('Una solicitud no tuvo respuesta');
 
+            // para el estudiante
+            // El tutor (tutor) no respondio tu solicitud de una tutoria en la materia (materia). Repite la consulta o busca otro tutor
+
         }
 
         //Aceptaron la solicitud
@@ -195,6 +202,12 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
 
             //Notificar al estudiante y tutor que tiene una tutoria
             console.log('En este momento comienza una tutoria');
+
+            // notificar estudiante 
+            // En este momento comienza tu tutoria en (materia) con el tutor (tutor)
+
+            // notificar tutor 
+            // En este momento comienza tu tutoria en (materia) con el estudiante (estudiante)
 
 
 
@@ -223,6 +236,8 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
 
                     //Notificar que se termino la tutoria a menos que existan reportes
                     console.log('se termino la tutoria');
+
+                    // Termino tu tutoria 
 
                 }
             });
@@ -421,6 +436,9 @@ async function acceptRequest(req, res){
 
     //Nofiticar que aceptaron la solicitud
     console.log('Aceptaron una solicitud');
+
+    // notificar estudiante
+    // El tutor (tutor) acepto tu solicitud 
 
     //Responiendo la solicitud
     res.status(500).send({message: 'Request accept correctly', IdSessionRejects:idSessions_interception});

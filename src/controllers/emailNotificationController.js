@@ -6,6 +6,7 @@ const createTemplateProvisional = require('../templates/templateSendEmailProvisi
 
 const Session = require('../models/session');
 const Student = require('../models/student');
+const Course = require('../models/course');
 
 
 
@@ -54,11 +55,42 @@ function getRandomInt(min, max) {
 }
 
 
+async function sendEmailTemplate(req, res){
+    const idSession = req.body.idSession;
 
 
+    //Obteniendo datos de la sesion
+    let session;
+    try{
+        session = await Session.findOne({_id:idSession});
+    }
+    catch(err){
+        return res.status(500).send({message:'Error getting session', err:err});
+    }
 
-async function notifySession(idSession, type){
+
+    try {
+        const emailInformation = {
+            recipient: 'tutor',
+            emailMessage: 'El tutor -tutor- es aceptado por -student- para le curso -course-',
+        }; 
+        await notifySession(idSession, emailInformation);
+    } catch(err){
+        res.status(500).send({message:err});
+    }
+
+    res.status(200).send({
+        message : "YES"
+    });
+
+}
+
+
+async function notifySession(idSession, emailInformation){
     
+    let emailMessage = emailInformation.emailMessage;
+    let recipient = emailInformation.recipient;
+
     //Obteniendo session
     let session;
 
@@ -66,8 +98,7 @@ async function notifySession(idSession, type){
         session = await Session.findOne({_id:idSession});
     }
     catch(err){
-        throw 'Error getting session';
-        return;
+        throw 'Error getting Session';
     }
 
     //Obteniendo tutor
@@ -76,7 +107,7 @@ async function notifySession(idSession, type){
         tutor = await Student.findOne({_id:session.tutor});
     }
     catch(err){
-        throw 'Error getting tutor';
+        throw 'Error getting tutor' ;
     }
 
 
@@ -88,39 +119,75 @@ async function notifySession(idSession, type){
     catch(err){
         throw 'Error getting student';
     }
-    
 
-
-
-    if(type == 0){
-        var params = {
-            Destination: { CcAddresses: [tutor.email], ToAddresses: [tutor.email] },
-            Message: { 
-                Body: { 
-                    Html: { Charset: "UTF-8", Data: "<h1>Tienes una solicitud</h1>"},
-                    Text: { Charset: "UTF-8", Data: "TEXT_FORMAT_BODY" }
-                },
-                Subject: { Charset: 'UTF-8', Data: 'Surprise - AWS Init' }
-            },
-            Source: 'QuokkaTeam2019@gmail.com', 
-            ReplyToAddresses: [ 'QuokkaTeam2019@gmail.com' ],
-        }
-
-         // Create the promise and SES service object
-        var sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendEmail(params).promise();
-        
-        // Handle promise's fulfilled/rejected states
-        sendPromise.then(
-            function(data) {
-                console.log(data.MessageId);
-                return;
-            }).catch(
-            function(err) {
-                console.error(err, err.stack);
-                return;
-        });
+    //Obteniendo curso
+    let course;
+    try {
+        course = await Course.findOne({_id:session.course});
     }
+    catch(err){
+        throw 'Error getting course';
+    }
+
+    var mapObj = {
+        '-tutor-' : `${tutor.name} ${tutor.lastName}`,
+        "-student-": `${student.name} ${student.lastName}`,
+        "-course-": course.name
+    };
+
+
+    // insertando nombres en lugares correctos
+    var re = new RegExp(Object.keys(mapObj).join("|"),"gi");
+    emailMessage = emailMessage.replace(re, function(matched){
+        return mapObj[matched];
+    });
+
+
+    let email;
+
+    if (recipient == 'tutor'){
+        console.log('its a tutor!');
+        email = tutor.email;
+    } else {
+        console.log('its a student!');
+        email = student.email;
+    }
+
+    let replacementTags = {
+        message : emailMessage
+    };
+
+
+    // Create sendTemplatedEmail params 
+    let params = {
+        Destination: { 
+        CcAddresses: [
+            email
+        ],
+        ToAddresses: [
+            email
+        ]
+        },
+        Source: 'QuokkaTeam2019@gmail.com', 
+        Template: 'emailTemplate', 
+        TemplateData: JSON.stringify(replacementTags), 
+        ReplyToAddresses: [
+        'QuokkaTeam2019@gmail.com'
+        ],
+    };
+
+    
+    let sendPromise = new AWS.SES({apiVersion: '2010-12-01'}).sendTemplatedEmail(params).promise();
+
+    sendPromise.then(
+        function(data) {
+            console.log('Email send sucessfuly');
+    }).catch(
+        function(err) {
+            throw 'Error sending email';
+    });
+
 
 }
 
-module.exports ={sendCodeVerification, notifySession}
+module.exports ={sendCodeVerification, notifySession, sendEmailTemplate}
