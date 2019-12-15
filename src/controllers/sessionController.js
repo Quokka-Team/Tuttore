@@ -101,13 +101,16 @@ async function addRequest(req, res){
 
 
     //Notificar por correo al tutor de la solicitud
-    console.log('Se añadio una solicitud');
-
-    // Para el tutor
-    // Tienes una solicitud de (Estudiante) para una tutoria en la materia (materia)
-
+    
     // await EmailNotificationController.notifySession(idSession, 0);
+    const emailInformation = {
+        recipient: 'tutor',
+        emailMessage: `Hola -tutor-, tienes una nueva solicitud para dictar una tutoría de la materia -course-, te la ha solicitado -student-, ingresa a tuttore para más información.`,
+    }; 
+    
+    const subject = `Solicitud Tutoria - -course- - -student- - -date-`;
 
+    await EmailNotificationController.notifySession(idSession, emailInformation,subject );
 
     //Respondo solicitud
     res.status(201).send({message: 'Request add correctly'});
@@ -182,7 +185,14 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
             }
 
             //Notificar al usuario que la solicitud no obtuvo respuesta
-            console.log('Una solicitud no tuvo respuesta');
+            // await EmailNotificationController.notifySession(idSession, 0);
+            const emailInformation = {
+                recipient: 'student',
+                emailMessage: `Hola -student-, tu solitud para la tutoría de la materia -course- con el tutor -tutor- no obtuvo respuesta, ingresa a tuttore para mas información. `,
+            }; 
+
+            const subject = `Solicitud sin Respuesta - -course- - -tutor- - -date-`;
+            await EmailNotificationController.notifySession(idSession, emailInformation, subject);
 
             // para el estudiante
             // El tutor (tutor) no respondio tu solicitud de una tutoria en la materia (materia). Repite la consulta o busca otro tutor
@@ -201,7 +211,23 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
 
 
             //Notificar al estudiante y tutor que tiene una tutoria
-            console.log('En este momento comienza una tutoria');
+            const emailInformation = {
+                recipient: 'tutor',
+                emailMessage: `Hola -tutor-, recuerda que tienes una tutoría de -course- con el estudiante -student-, ingresa a tuttore para más información.`,
+            }; 
+
+            const subject = `Tutoria - -course- - -student- - -date-`;
+            await EmailNotificationController.notifySession(idSession, emailInformation, subject);
+
+
+
+            const emailInformation2 = {
+                recipient: 'student',
+                emailMessage: `Hola -student-, recuerda que tienes una tutoría de -course- con el tutor -tutor-, ingresa a tuttore para más información.`,
+            }; 
+
+            const subject2 = `Tutoria - -course- - -tutor- - -date-`;
+            await EmailNotificationController.notifySession(idSession, emailInformation2, subject2);
 
             // notificar estudiante 
             // En este momento comienza tu tutoria en (materia) con el tutor (tutor)
@@ -235,8 +261,20 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
                     }
 
                     //Notificar que se termino la tutoria a menos que existan reportes
-                    console.log('se termino la tutoria');
+                    const emailInformation = {
+                        recipient: 'student',
+                        emailMessage: `Hola -student-, ¿Como ha estado la tutoría de -course-?, recuerda que puedes calificar a -tutor- o realizar algún reporte ingresando a tuttore.`,
+                    }; 
+                    const subject = `Tutoria Finalizada - -course- - -tutor- - -date-`;
+                    await EmailNotificationController.notifySession(idSession, emailInformation, subject);
 
+                    
+                    const emailInformation2 = {
+                        recipient: 'tutor',
+                        emailMessage: `Hola -tutor-, ¿Como ha estado la tutoría de -course-?, recuerda que puedes ver la calificación de -student- o realizar algún reporte ingresando a tuttore. `,
+                    }; 
+                    const subject2 = `Tutoria Finalizada - -course- - -student- - -date-`;
+                    await EmailNotificationController.notifySession(idSession, emailInformation2, subject2);
                     // Termino tu tutoria 
 
                 }
@@ -299,6 +337,12 @@ async function rejectRequest(req, res){
 
     //Notificar que rechazaron la Solicitud
     console.log('rechazaron la solicitud');
+    const emailInformation = {
+        recipient: 'student',
+        emailMessage: `Hola -student-, tu solitud para la tutoría de -course- con el tutor -tutor- fue rechazada, ingresa a tuttore para mas información. `,
+    }; 
+    const subject = `Tutoria Rechazada - -course- - -tutor- - -date-`;
+    await EmailNotificationController.notifySession(idSession, emailInformation, subject);
 
 
     //Responder solicitud
@@ -388,7 +432,13 @@ async function acceptRequest(req, res){
             await Session.updateOne({_id:id}, {status:'2'});
             
             //Notificar que cancelaron la solicitud
-            console.log('Cancelaron la solicitud');
+            const emailInformation = {
+                recipient: 'student',
+                emailMessage: `Hola -student-, tu solitud para la tutoría de -course- con el tutor -tutor- fue rechazada, ingresa a tuttore para mas información. `,
+            }; 
+
+            const subject = `Tutoria Rechazada - -course- - -tutor- - -date-`;
+            await EmailNotificationController.notifySession(id, emailInformation, subject);
         }
         catch(err){
             res.status(500).send({message: 'Error update session', err:err});
@@ -435,7 +485,12 @@ async function acceptRequest(req, res){
     
 
     //Nofiticar que aceptaron la solicitud
-    console.log('Aceptaron una solicitud');
+    const emailInformation = {
+        recipient: 'student',
+        emailMessage: `Hola -student-, tu solitud para la tutoría de -course- con el tutor -tutor- fue aceptada, ingresa a tuttore para mas información. `,
+    }; 
+    const subject = `Tutoria Aceptada - -course- - -tutor- - -date-`;
+    await EmailNotificationController.notifySession(idSession, emailInformation, subject);
 
     // notificar estudiante
     // El tutor (tutor) acepto tu solicitud 
