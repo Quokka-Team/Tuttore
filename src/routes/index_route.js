@@ -128,6 +128,9 @@ api.get('/getCommentsTutor/:idTutor', SessionController.getCommentsTutor);
 api.post('/commentSession', SessionController.commentSession);
 
 
+//  QUITARLO!!!
+api.post('/sendEmailTemplate', emailNotificationController.sendEmailTemplate);
+
 //Provisional
 api.get('/getAllStudents', StudentController.getAllStudents);
 
