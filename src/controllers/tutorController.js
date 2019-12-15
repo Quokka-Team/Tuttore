@@ -151,6 +151,7 @@ async function getTutor(req, res){
             id: e._id,
             title: e.title,
             start: e.start,
+            end: e.end,
             color: e.color,
             textColor: e.textColor,
             overlap: e.overlap,

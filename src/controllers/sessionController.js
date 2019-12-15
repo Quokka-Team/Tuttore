@@ -288,8 +288,7 @@ async function scheduleVerificationRequest(dateStartReq, dateEndReq, idSession){
         }
     }, 
     {
-        scheduled: true,
-        timezone: "America/Bogota"
+        scheduled: true
     });
 
     return;
@@ -346,7 +345,7 @@ async function rejectRequest(req, res){
 
 
     //Responder solicitud
-    res.status(500).send({message: 'Request reject correctly'});
+    res.status(200).send({message: 'Request reject correctly'});
 }
 
 
@@ -496,7 +495,7 @@ async function acceptRequest(req, res){
     // El tutor (tutor) acepto tu solicitud 
 
     //Responiendo la solicitud
-    res.status(500).send({message: 'Request accept correctly', IdSessionRejects:idSessions_interception});
+    res.status(200).send({message: 'Request accept correctly', IdSessionRejects:idSessions_interception});
 }
 
 
@@ -543,7 +542,7 @@ async function getSessionsStudent(req, res){
         i=i+1;
     }
 
-    res.send(sesiones_res);
+    res.status(200).send(sesiones_res);
 }
 
 
@@ -592,7 +591,7 @@ async function getNofeedbackSessionsStudent(req, res){
         i=i+1;
     }
 
-    res.send(sesiones_res);
+    res.status(200).send(sesiones_res);
 }
 
 
@@ -686,7 +685,7 @@ async function getCommentsTutor(req, res){
         i=i+1;
     }
 
-    res.send(sesiones_res);
+    res.status(200).send(sesiones_res);
 }
 
 
@@ -728,7 +727,7 @@ async function getSessionsTutor(req, res){
         i=i+1;
     }
 
-    res.send(sesiones_res);
+    res.status(200).send(sesiones_res);
 }
 
 
