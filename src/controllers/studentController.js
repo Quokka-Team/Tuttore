@@ -190,19 +190,57 @@ async function getAllStudents(req, res){
 
 
 
-async function updateStudent(req, res){
-    let id_student = req.student;
+async function updateProfilePicture(req, res){
+    let id_student = req.body.id;
 
-    updateStudent = {
+    let profilePicture;
+    let idProfilePicture;
+
+    try{
+
+        profilePicture = req.files.profilePicture;
+
+        idProfilePicture = await GoogleDriveAPI.uploadProfileImage(profilePicture, `profilePicture_${req.body.email}_${profilePicture.name}`);
+    }
+    catch(err){
+        return res.status(403).send({message: 'Failed Upload Profile Picture'});
+    }
+
+    let updateStudent = {
+        profilePicture:`https://tuttore.tk/getPicture/${idProfilePicture}`
+    };
+
+    await Student.updateOne({ _id: id_student }, updateStudent)
+    .exec(function (err, student){
+        if (err) {
+            return res.status(500).send({
+                message: 'Server Failed updating student',
+                err: err
+            });
+        }
+
+        
+        res.status(200).send({
+            message : 'Student profile picture updated succesfully'
+        });
+    });
+
+}
+
+
+
+async function updateStudent(req, res){
+    let id_student = req.body.idStudent;
+
+    let update_student = {
         name : req.body.name,
         lastName : req.body.lastName,
-        email: req.body.email,
         career: req.body.career,
         gpa:req.body.gpa,
         phoneNumber: req.body.phoneNumber
     };
 
-    await Student.updateOne({ _id: id_student }, updateStudent)
+    await Student.updateOne({ _id: id_student }, update_student)
     .exec(function (err, student){
         if (err) {
             return res.status(500).send({
@@ -246,5 +284,6 @@ module.exports = {
     getAllStudents,
     updateStudent,
     getStudentProfilePicture,
-    typeStudent
+    typeStudent,
+    updateProfilePicture
 }

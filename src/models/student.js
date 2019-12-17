@@ -28,6 +28,9 @@ const EventEmbeddedTutorSchema = new Schema({
     start:{
         type: String
     },
+    end:{
+        type: String
+    },
     color:{
         type: String
     }, 

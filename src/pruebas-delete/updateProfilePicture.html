@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UpdateProfilePicture</title>
+</head>
+<body>
+    <form action='http://localhost:3000/UpdateProfilePicture/' method="POST" enctype="multipart/form-data">
+        <label>id:<input type="text" name="id"></label>
+        <br/>
+        <br/>
+        <label>email:<input type="email" name="email"></label>
+        <br/> 
+        <br/>
+        <input type="file" name="profilePicture">
+        <br/>
+        <br/>
+        <input type="submit" value="Subir">
+    </form>
+</body>
+</html>

@@ -28,6 +28,14 @@ async function registerTutor(req, res){
    
 }
 
+
+
+
+
+
+
+
+
 async function addCourseTutor(req, res){
 
     const id_tutor = req.student;
@@ -73,6 +81,20 @@ async function addCourseTutor(req, res){
 
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -129,6 +151,7 @@ async function getTutor(req, res){
             id: e._id,
             title: e.title,
             start: e.start,
+            end: e.end,
             color: e.color,
             textColor: e.textColor,
             overlap: e.overlap,
@@ -142,6 +165,13 @@ async function getTutor(req, res){
     res.status(200).send(newTutor);
 
 }
+
+
+
+
+
+
+
 
 //Funcion auxiliar de get tutor
 async function getInformationCourses(idCourses){
@@ -160,6 +190,14 @@ async function getInformationCourses(idCourses){
     }
     return courses;
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -200,6 +238,20 @@ async function getTutorsByCourse(req, res){
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function getInformationTutors(getTutors){
     let tutors = [];
     for(let i = 0; i<getTutors.length; i++){
@@ -222,6 +274,15 @@ async function getInformationTutors(getTutors){
 
 
 
+
+
+
+
+
+
+
+
+
 async function getNewTutors(req, res){
     let numberTutors = parseInt(req.params.numberTutors);
     try{
@@ -235,6 +296,17 @@ async function getNewTutors(req, res){
         });
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 async function getNewTutorsByCourse(req, res){
@@ -302,12 +374,22 @@ async function getNewTutorsByCourse(req, res){
 
 
 
+
+
+
+
+
+
+
+
+
 async function addEventTutor(req, res){
     const id_tutor = req.student;
 
     const newEvent ={
         title: req.body.title,
         start: req.body.start,
+        end: req.body.end,
         color: req.body.color,
         textColor: req.body.textColor,
         overlap: req.body.overlap,
@@ -329,6 +411,19 @@ async function addEventTutor(req, res){
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function deleteEventTutor(req, res){
     const id_tutor = req.student;
     const id_event = req.body.idEvent;
@@ -339,6 +434,19 @@ async function deleteEventTutor(req, res){
         res.status(200).send({message: 'event deleted correctly'});
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 async function getEventsTutor(req, res){
     const id_tutor = req.params.idTutor;
@@ -355,6 +463,7 @@ async function getEventsTutor(req, res){
                 id: e._id,
                 title: e.title,
                 start: e.start,
+                end: e.end,
                 color: e.color,
                 textColor: e.textColor,
                 overlap: e.overlap,
@@ -367,12 +476,26 @@ async function getEventsTutor(req, res){
 
 } 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function updateEventTutor (req, res){
     const id_event = req.body.idEvent;
 
     const updatedEvent = {
         'events.$.title': req.body.title,
         'events.$.start': req.body.start,
+        'events.$.end': req.body.end,
         'events.$.color': req.body.color,
         'events.$.textColor': req.body.textColor,
         'events.$.overlap': req.body.overlap,
@@ -385,6 +508,46 @@ async function updateEventTutor (req, res){
     });
 }
 
+
+
+
+
+
+
+
+
+async function updateTutor(req, res){    
+    let id_tutor = req.body.idTutor;
+
+    let update_tutor = {
+        name : req.body.name,
+        lastName : req.body.lastName,
+        career: req.body.career,
+        gpa:req.body.gpa,
+        phoneNumber: req.body.phoneNumber,
+        description: req.body.description,
+        price : req.body.price
+    };
+
+    console.log(update_tutor);
+
+    await Student.updateOne({ _id: id_tutor }, update_tutor)
+    .exec(function (err, student){
+        if (err) {
+            return res.status(500).send({
+                message: 'Server Failed updating tutor',
+                err: err
+            });
+        }
+
+        res.status(200).send({
+            message : 'Tutor updated succesfully'
+        });
+    });
+}
+
+
+
 module.exports = { 
     registerTutor, 
     addCourseTutor, 
@@ -395,5 +558,6 @@ module.exports = {
     addEventTutor, 
     deleteEventTutor, 
     getEventsTutor,
-    updateEventTutor
+    updateEventTutor,
+    updateTutor
 }
